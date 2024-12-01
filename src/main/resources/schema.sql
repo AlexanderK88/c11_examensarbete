@@ -85,4 +85,14 @@ CREATE TABLE IF NOT EXISTS lists (
                                 description TEXT,
                                 user_id INT,
                                 FOREIGN KEY (user_id) REFERENCES users(id)
-)
+);
+
+CREATE TABLE IF NOT EXISTS notifications (
+                                id INT PRIMARY KEY,
+                                message TEXT,
+                                read_status BOOLEAN,
+                                user_id INT,
+                                timestamp TIMESTAMP,
+                                FOREIGN KEY (user_id) REFERENCES users (id)
+                                    );
+
