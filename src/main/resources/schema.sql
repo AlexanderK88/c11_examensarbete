@@ -119,3 +119,16 @@ CREATE TABLE IF NOT EXISTS comments (
                                 FOREIGN KEY (review_id) REFERENCES reviews(id)
 );
 
+CREATE TABLE IF NOT EXISTS tags (
+                                id INT PRIMARY KEY,
+                                tag_name VARCHAR(255)
+);
+
+CREATE TABLE IF NOT EXISTS manga_tags (
+                                manga_id INT,
+                                tag_id INT,
+                                PRIMARY KEY (manga_id, tag_id),
+                                FOREIGN KEY (manga_id) REFERENCES manga(id),
+                                FOREIGN KEY (tag_id) REFERENCES tags(id)
+);
+
