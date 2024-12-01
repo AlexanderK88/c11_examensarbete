@@ -94,5 +94,18 @@ CREATE TABLE IF NOT EXISTS notifications (
                                 user_id INT,
                                 timestamp TIMESTAMP,
                                 FOREIGN KEY (user_id) REFERENCES users (id)
-                                    );
+);
+
+CREATE TABLE IF NOT EXISTS reviews (
+                                id INT PRIMARY KEY,
+                                review_text TEXT,
+                                title VARCHAR(255),
+                                spoiler BOOLEAN,
+                                rating DECIMAL(3, 2),
+                                user_id INT,
+                                manga_id INT,
+                                timestamp TIMESTAMP,
+                                FOREIGN KEY (user_id) REFERENCES users(id),
+                                FOREIGN KEY (manga_id) REFERENCES manga(id)
+);
 
