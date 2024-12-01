@@ -77,4 +77,12 @@ CREATE TABLE IF NOT EXISTS saved_manga (
                                 PRIMARY KEY (user_id, manga_id),
                                 FOREIGN KEY (user_id) REFERENCES users(id),
                                 FOREIGN KEY (manga_id) REFERENCES manga(id)
+);
+
+CREATE TABLE IF NOT EXISTS lists (
+                                id INT PRIMARY KEY,
+                                list_name VARCHAR(255),
+                                description TEXT,
+                                user_id INT,
+                                FOREIGN KEY (user_id) REFERENCES users(id)
 )
