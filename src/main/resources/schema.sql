@@ -69,3 +69,12 @@ CREATE TABLE IF NOT EXISTS users (
                         email VARCHAR(255),
                         role VARCHAR(255)
 );
+
+CREATE TABLE IF NOT EXISTS saved_manga (
+                                user_id INT,
+                                manga_id INT,
+                                list_id INT,
+                                PRIMARY KEY (user_id, manga_id),
+                                FOREIGN KEY (user_id) REFERENCES users(id),
+                                FOREIGN KEY (manga_id) REFERENCES manga(id)
+)
