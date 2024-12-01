@@ -61,3 +61,11 @@ CREATE TABLE IF NOT EXISTS manga_genres (
                               FOREIGN KEY (manga_id) REFERENCES manga(id),
                               FOREIGN KEY (genre_id) REFERENCES genres(id)
 );
+
+CREATE TABLE IF NOT EXISTS users (
+                        id INT PRIMARY KEY,
+                        username VARCHAR(255),
+                        password VARCHAR(255),
+                        email VARCHAR(255),
+                        role VARCHAR(255)
+);
