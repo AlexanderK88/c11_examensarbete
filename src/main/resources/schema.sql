@@ -173,3 +173,5 @@ CREATE TABLE IF NOT EXISTS manga_authors (
                                 FOREIGN KEY (author_id) REFERENCES authors(id)
 );
 
+
+
