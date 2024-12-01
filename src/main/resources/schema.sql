@@ -160,3 +160,16 @@ CREATE TABLE IF NOT EXISTS manga_images (
                                 FOREIGN KEY (image_id) REFERENCES images(id)
 );
 
+CREATE TABLE IF NOT EXISTS authors (
+                                id INT PRIMARY KEY,
+                                author_name VARCHAR(255)
+);
+
+CREATE TABLE IF NOT EXISTS manga_authors (
+                                manga_id INT,
+                                author_id INT,
+                                PRIMARY KEY (manga_id, author_id),
+                                FOREIGN KEY (manga_id) REFERENCES manga(id),
+                                FOREIGN KEY (author_id) REFERENCES authors(id)
+);
+
