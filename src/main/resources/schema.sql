@@ -145,3 +145,18 @@ CREATE TABLE IF NOT EXISTS manga_genres (
                                 FOREIGN KEY (genre_id) REFERENCES genres(id)
 );
 
+CREATE TABLE IF NOT EXISTS images (
+                                id INT PRIMARY KEY,
+                                image_url VARCHAR(255),
+                                small_image_url VARCHAR(255),
+                                large_image_url VARCHAR(255)
+);
+
+CREATE TABLE IF NOT EXISTS manga_images (
+                                manga_id INT,
+                                image_id INT,
+                                PRIMARY KEY (manga_id, image_id),
+                                FOREIGN KEY (manga_id) REFERENCES manga(id),
+                                FOREIGN KEY (image_id) REFERENCES images(id)
+);
+
