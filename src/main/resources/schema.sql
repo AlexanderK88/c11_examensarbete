@@ -109,3 +109,13 @@ CREATE TABLE IF NOT EXISTS reviews (
                                 FOREIGN KEY (manga_id) REFERENCES manga(id)
 );
 
+CREATE TABLE IF NOT EXISTS comments (
+                                id INT PRIMARY KEY,
+                                comment_text TEXT,
+                                user_id INT,
+                                review_id INT,
+                                timestamp TIMESTAMP,
+                                FOREIGN KEY (user_id) REFERENCES users(id),
+                                FOREIGN KEY (review_id) REFERENCES reviews(id)
+);
+
