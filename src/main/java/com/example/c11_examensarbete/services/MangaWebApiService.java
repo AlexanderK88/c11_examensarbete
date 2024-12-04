@@ -60,25 +60,42 @@ public class MangaWebApiService {
         int currentPage = 1;
         boolean hasNextPage = true;
 
+        while (hasNextPage) {
             try {
+                // Fetch manga page data
                 String pageData = fetchMangaPage(currentPage);
                 JsonNode root = objectMapper.readTree(pageData);
 
+                // Check if there's a next page
                 hasNextPage = root.path("pagination").path("has_next_page").asBoolean();
 
+                // Parse and save data
                 JsonNode data = root.path("data");
                 for (JsonNode mangaNode : data) {
                     MangaDto mangaDto = extractMangaDto(mangaNode);
-                    saveManga(mangaDto);
+                    if (mangaDto != null) {
+                        saveManga(mangaDto);
+                    }
                 }
-                Thread.currentThread().sleep(3000); // Be nice to the API
+                // Be kind to the API by introducing a delay
+
+                Thread.sleep(3000); // Wait for 3 second between requests
+                // Increment the page
                 currentPage++;
 
+            } catch (InterruptedException e) {
+                // Handle thread interruption gracefully
+                Thread.currentThread().interrupt();
+                System.err.println("Thread interrupted: " + e.getMessage());
+                break;
             } catch (Exception e) {
+                // Log and continue
+                System.err.println("Error while processing page " + currentPage + ": " + e.getMessage());
                 e.printStackTrace();
-           }
-
+            }
+        }
     }
+
     public String fetchMangaPage(int page) {
                 String pageData = restClient
                         .get()
