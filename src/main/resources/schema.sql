@@ -11,7 +11,7 @@ CREATE TABLE IF NOT EXISTS manga (
                        publishing BOOLEAN,
                        published_from DATETIME,
                        published_to DATETIME,
-                       score DECIMAL(3, 2),
+                       score DECIMAL(3, 2) DEFAULT 0,
                        scored_by INT,
                        ranking INT,
                        popularity INT,

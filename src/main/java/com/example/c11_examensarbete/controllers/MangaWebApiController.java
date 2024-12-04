@@ -14,12 +14,12 @@ public class MangaWebApiController {
     @Autowired
     private MangaWebApiService mangaWebApiService;
 
-    @GetMapping("/api/manga")
+    @GetMapping("/remote/api/manga")
     public String getManga() {
         return mangaWebApiService.getManga();
     }
 
-    @GetMapping("/api/manga/fetch-all")
+    @GetMapping("/remote/api/manga/fetch-all")
     public void fetchAllMangas() {
         mangaWebApiService.fetchAndSaveMangas();
     }
