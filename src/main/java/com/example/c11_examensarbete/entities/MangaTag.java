@@ -7,22 +7,19 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "saved_manga", schema = "mydatabase")
-public class SavedManga {
+@Table(name = "manga_tags", schema = "mydatabase")
+public class MangaTag {
     @EmbeddedId
-    private SavedMangaId id;
-
-    @MapsId("userId")
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    private MangaTagId id;
 
     @MapsId("mangaId")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "manga_id", nullable = false)
     private Manga manga;
 
-    @Column(name = "list_id")
-    private Integer listId;
+    @MapsId("tagId")
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "tag_id", nullable = false)
+    private Tag tag;
 
 }

@@ -19,6 +19,14 @@ public class Comment {
     @Column(name = "comment_text")
     private String commentText;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "review_id")
+    private Review review;
+
     @Column(name = "timestamp")
     private Instant timestamp;
 

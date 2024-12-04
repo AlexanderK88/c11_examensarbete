@@ -13,28 +13,28 @@ import java.util.Objects;
 @Getter
 @Setter
 @Embeddable
-public class SavedMangaId implements Serializable {
-    private static final long serialVersionUID = 1386643512837673099L;
-    @NotNull
-    @Column(name = "user_id", nullable = false)
-    private Integer userId;
-
+public class MangaAuthorId implements Serializable {
+    private static final long serialVersionUID = 2639241313179278134L;
     @NotNull
     @Column(name = "manga_id", nullable = false)
     private Integer mangaId;
+
+    @NotNull
+    @Column(name = "author_id", nullable = false)
+    private Integer authorId;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        SavedMangaId entity = (SavedMangaId) o;
+        MangaAuthorId entity = (MangaAuthorId) o;
         return Objects.equals(this.mangaId, entity.mangaId) &&
-                Objects.equals(this.userId, entity.userId);
+                Objects.equals(this.authorId, entity.authorId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(mangaId, userId);
+        return Objects.hash(mangaId, authorId);
     }
 
 }
