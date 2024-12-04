@@ -20,18 +20,12 @@ CREATE TABLE IF NOT EXISTS manga (
 
 -- Table: Images
 CREATE TABLE IF NOT EXISTS images (
-                        id INT PRIMARY KEY,
+                        id INT AUTO_INCREMENT PRIMARY KEY,
                         image_url VARCHAR(255),
                         small_image_url VARCHAR(255),
-                        large_image_url VARCHAR(255)
-);
-
-CREATE TABLE IF NOT EXISTS manga_images (
-                              manga_id INT,
-                              image_id INT,
-                              PRIMARY KEY (manga_id, image_id),
-                              FOREIGN KEY (manga_id) REFERENCES manga(id),
-                              FOREIGN KEY (image_id) REFERENCES images(id)
+                        large_image_url VARCHAR(255),
+                        manga_id INT,
+                        FOREIGN KEY (manga_id) REFERENCES manga(id)
 );
 
 -- Table: Authors
@@ -131,47 +125,3 @@ CREATE TABLE IF NOT EXISTS manga_tags (
                                 FOREIGN KEY (manga_id) REFERENCES manga(id),
                                 FOREIGN KEY (tag_id) REFERENCES tags(id)
 );
-
-CREATE TABLE IF NOT EXISTS genres (
-                                id INT PRIMARY KEY,
-                                genre_name VARCHAR(255)
-);
-
-CREATE TABLE IF NOT EXISTS manga_genres (
-                                manga_id INT,
-                                genre_id INT,
-                                PRIMARY KEY (manga_id, genre_id),
-                                FOREIGN KEY (manga_id) REFERENCES manga(id),
-                                FOREIGN KEY (genre_id) REFERENCES genres(id)
-);
-
-CREATE TABLE IF NOT EXISTS images (
-                                id INT PRIMARY KEY,
-                                image_url VARCHAR(255),
-                                small_image_url VARCHAR(255),
-                                large_image_url VARCHAR(255)
-);
-
-CREATE TABLE IF NOT EXISTS manga_images (
-                                manga_id INT,
-                                image_id INT,
-                                PRIMARY KEY (manga_id, image_id),
-                                FOREIGN KEY (manga_id) REFERENCES manga(id),
-                                FOREIGN KEY (image_id) REFERENCES images(id)
-);
-
-CREATE TABLE IF NOT EXISTS authors (
-                                id INT PRIMARY KEY,
-                                author_name VARCHAR(255)
-);
-
-CREATE TABLE IF NOT EXISTS manga_authors (
-                                manga_id INT,
-                                author_id INT,
-                                PRIMARY KEY (manga_id, author_id),
-                                FOREIGN KEY (manga_id) REFERENCES manga(id),
-                                FOREIGN KEY (author_id) REFERENCES authors(id)
-);
-
-
-

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+
 @RestController
 public class MangaWebApiController {
 
@@ -18,5 +19,8 @@ public class MangaWebApiController {
         return mangaWebApiService.getManga();
     }
 
-
+    @GetMapping("/api/manga/fetch-all")
+    public void fetchAllMangas() {
+        mangaWebApiService.fetchAndSaveMangas();
+    }
 }
