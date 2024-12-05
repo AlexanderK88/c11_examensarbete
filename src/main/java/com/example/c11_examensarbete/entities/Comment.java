@@ -12,6 +12,7 @@ import java.time.Instant;
 @Table(name = "comments", schema = "mydatabase")
 public class Comment {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Integer id;
 
@@ -29,5 +30,15 @@ public class Comment {
 
     @Column(name = "timestamp")
     private Instant timestamp;
+
+    @PrePersist
+    protected void onCreate() {
+        timestamp = Instant.now();
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        timestamp = Instant.now();
+    }
 
 }

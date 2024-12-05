@@ -39,6 +39,14 @@ public class MangaService {
                 .subList(0, 25);
     }
 
+    public List<MangaDto> getMangaByAuthor(int id) {
+        return mangaRepository.findAll().stream()
+                .filter(manga -> manga.getAuthors().stream().anyMatch(author -> author.getId() == id))
+                .map(MangaDto::fromManga)
+                .toList()
+                .subList(0, 25);
+    }
+
     public List<MangaDto> getNewManga() {
         Instant sixtyDaysAgo = Instant.now().minus(2000, ChronoUnit.DAYS); // change amount of days when we have every manga
 
@@ -80,4 +88,6 @@ public class MangaService {
                 .toList()
                 .subList(0, 10);
     }
+
+
 }

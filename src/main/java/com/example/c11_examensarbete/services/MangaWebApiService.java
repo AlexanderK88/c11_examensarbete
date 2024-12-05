@@ -79,7 +79,7 @@ public class MangaWebApiService {
                 }
                 // Be kind to the API by introducing a delay
 
-                Thread.sleep(3000); // Wait for 3 second between requests
+                Thread.sleep(1200); // Wait for 3 second between requests
                 // Increment the page
                 currentPage++;
 

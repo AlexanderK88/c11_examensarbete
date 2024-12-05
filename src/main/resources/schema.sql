@@ -11,7 +11,7 @@ CREATE TABLE IF NOT EXISTS manga (
                        publishing BOOLEAN,
                        published_from DATETIME,
                        published_to DATETIME,
-                       score DECIMAL(3, 2) DEFAULT 0,
+                       score DECIMAL(3, 2),
                        scored_by INT,
                        ranking INT,
                        popularity INT,
@@ -20,7 +20,7 @@ CREATE TABLE IF NOT EXISTS manga (
 
 -- Table: Images
 CREATE TABLE IF NOT EXISTS images (
-                        id INT AUTO_INCREMENT PRIMARY KEY,
+                        id INT PRIMARY KEY AUTO_INCREMENT,
                         image_url VARCHAR(255),
                         small_image_url VARCHAR(255),
                         large_image_url VARCHAR(255),
@@ -57,7 +57,7 @@ CREATE TABLE IF NOT EXISTS manga_genres (
 );
 
 CREATE TABLE IF NOT EXISTS users (
-                        id INT PRIMARY KEY,
+                        id INT PRIMARY KEY AUTO_INCREMENT,
                         username VARCHAR(255),
                         password VARCHAR(255),
                         email VARCHAR(255),
@@ -74,7 +74,7 @@ CREATE TABLE IF NOT EXISTS saved_manga (
 );
 
 CREATE TABLE IF NOT EXISTS lists (
-                                id INT PRIMARY KEY,
+                                id INT PRIMARY KEY AUTO_INCREMENT,
                                 list_name VARCHAR(255),
                                 description TEXT,
                                 user_id INT,
@@ -82,33 +82,33 @@ CREATE TABLE IF NOT EXISTS lists (
 );
 
 CREATE TABLE IF NOT EXISTS notifications (
-                                id INT PRIMARY KEY,
+                                id INT PRIMARY KEY AUTO_INCREMENT,
                                 message TEXT,
                                 read_status BOOLEAN,
                                 user_id INT,
-                                timestamp TIMESTAMP,
+                                timestamp DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
                                 FOREIGN KEY (user_id) REFERENCES users (id)
 );
 
 CREATE TABLE IF NOT EXISTS reviews (
-                                id INT PRIMARY KEY,
+                                id INT PRIMARY KEY AUTO_INCREMENT,
                                 review_text TEXT,
                                 title VARCHAR(255),
                                 spoiler BOOLEAN,
                                 rating DECIMAL(3, 2),
                                 user_id INT,
                                 manga_id INT,
-                                timestamp TIMESTAMP,
+                                timestamp DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
                                 FOREIGN KEY (user_id) REFERENCES users(id),
                                 FOREIGN KEY (manga_id) REFERENCES manga(id)
 );
 
 CREATE TABLE IF NOT EXISTS comments (
-                                id INT PRIMARY KEY,
+                                id INT AUTO_INCREMENT PRIMARY KEY,
                                 comment_text TEXT,
                                 user_id INT,
                                 review_id INT,
-                                timestamp TIMESTAMP,
+                                timestamp DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
                                 FOREIGN KEY (user_id) REFERENCES users(id),
                                 FOREIGN KEY (review_id) REFERENCES reviews(id)
 );
@@ -125,3 +125,4 @@ CREATE TABLE IF NOT EXISTS manga_tags (
                                 FOREIGN KEY (manga_id) REFERENCES manga(id),
                                 FOREIGN KEY (tag_id) REFERENCES tags(id)
 );
+
