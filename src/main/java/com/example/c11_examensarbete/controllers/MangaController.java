@@ -6,6 +6,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import com.example.c11_examensarbete.dtos.AuthorDto;
+import com.example.c11_examensarbete.dtos.GenreDto;
 
 import java.util.List;
 
@@ -31,10 +33,16 @@ public class MangaController {
         return manga;
     }
 
-    @GetMapping("/manga/category/{id}")
-    public List<MangaDto> getMangaByCategory(@PathVariable int id) {
-        List<MangaDto> manga = mangaService.getMangaByCategory(id);
+    @GetMapping("/manga/genre/{id}")
+    public List<MangaDto> getMangaByGenre(@PathVariable int id) {
+        List<MangaDto> manga = mangaService.getMangaByGenre(id);
         return manga;
+    }
+
+    @GetMapping("/manga/genres")
+    public List<GenreDto> getGenreByManga(@PathVariable int id) {
+        List<GenreDto> genre = mangaService.getGenreByManga(id);
+        return genre;
     }
 
     @GetMapping("/manga/author/{id}")
@@ -42,6 +50,13 @@ public class MangaController {
         List<MangaDto> manga = mangaService.getMangaByAuthor(id);
         return manga;
     }
+
+    @GetMapping("/manga/authors")
+    public List<AuthorDto> getAuthorsByManga(@PathVariable int id) {
+        List<AuthorDto> author = mangaService.getAuthorsByManga(id);
+        return author;
+    }
+
 
     @GetMapping("/manga/new-releases")
     public List<MangaDto> getNewManga() {
@@ -66,6 +81,4 @@ public class MangaController {
         List<MangaDto> manga = mangaService.getHighestRatedManga();
         return manga;
     }
-
-
 }

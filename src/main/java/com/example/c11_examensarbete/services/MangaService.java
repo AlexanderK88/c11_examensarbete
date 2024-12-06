@@ -1,5 +1,7 @@
 package com.example.c11_examensarbete.services;
 
+import com.example.c11_examensarbete.dtos.AuthorDto;
+import com.example.c11_examensarbete.dtos.GenreDto;
 import com.example.c11_examensarbete.dtos.MangaDto;
 import com.example.c11_examensarbete.repositories.MangaRepository;
 import org.springframework.stereotype.Service;
@@ -31,12 +33,19 @@ public class MangaService {
                 .toList();
     }
 
-    public List<MangaDto> getMangaByCategory(int id) {
+    public List<MangaDto> getMangaByGenre(int id) {
         return mangaRepository.findAll().stream()
                 .filter(manga -> manga.getGenres().stream().anyMatch(genre -> genre.getId() == id))
                 .map(MangaDto::fromManga)
                 .toList()
                 .subList(0, 25);
+    }
+
+    public List<GenreDto> getGenreByManga(int id) {
+        return mangaRepository.findById(id).stream()
+                .flatMap(manga -> manga.getGenres().stream())
+                .map(GenreDto::fromGenre)
+                .toList();
     }
 
     public List<MangaDto> getMangaByAuthor(int id) {
@@ -45,6 +54,13 @@ public class MangaService {
                 .map(MangaDto::fromManga)
                 .toList()
                 .subList(0, 25);
+    }
+
+    public List<AuthorDto> getAuthorsByManga(int id) {
+        return mangaRepository.findById(id).stream()
+                .flatMap(manga -> manga.getAuthors().stream())
+                .map(AuthorDto::fromAuthor)
+                .toList();
     }
 
     public List<MangaDto> getNewManga() {
