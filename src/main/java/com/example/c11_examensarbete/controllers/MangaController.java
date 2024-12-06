@@ -39,7 +39,7 @@ public class MangaController {
         return manga;
     }
 
-    @GetMapping("/manga/genres")
+    @GetMapping("/manga/genres/{id}")
     public List<GenreDto> getGenreByManga(@PathVariable int id) {
         List<GenreDto> genre = mangaService.getGenreByManga(id);
         return genre;
@@ -51,12 +51,11 @@ public class MangaController {
         return manga;
     }
 
-    @GetMapping("/manga/authors")
+    @GetMapping("/manga/authors/{id}")
     public List<AuthorDto> getAuthorsByManga(@PathVariable int id) {
         List<AuthorDto> author = mangaService.getAuthorsByManga(id);
         return author;
     }
-
 
     @GetMapping("/manga/new-releases")
     public List<MangaDto> getNewManga() {
