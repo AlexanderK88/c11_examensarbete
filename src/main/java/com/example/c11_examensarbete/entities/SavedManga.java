@@ -26,5 +26,10 @@ public class SavedManga {
     private Manga manga;
 
     @ManyToMany
+    @JoinTable(
+            name = "list_manga",
+            joinColumns = @JoinColumn(name = "saved_manga_id"),
+            inverseJoinColumns = @JoinColumn(name = "list_id")
+    )
     private Set<List> lists = new LinkedHashSet<>();
 }

@@ -20,21 +20,24 @@ public class SavedMangaController {
         this.savedMangaService = savedMangaService;
     }
 
+    //TODO: Works in bruno but no exeption handling
     @GetMapping("/user/{userid}/mangas")
     public List<SavedMangaDto> getUsersSavedMangas(@PathVariable int userid) {
         List<SavedMangaDto> manga = savedMangaService.getUsersSavedMangas(userid);
         return manga;
     }
 
+    //TODO: Works in bruno but no exeption handling
     @PostMapping("/user/{userid}/manga")
     public ResponseEntity<Void> addSavedManga(@RequestBody SavedMangaDto savedMangaDto) {
         int id = savedMangaService.saveManga(savedMangaDto);
         return ResponseEntity.created(URI.create("/reviews/comments/" + id)).build();
     }
 
-    @DeleteMapping("/user/manga/{id}")
-    public ResponseEntity<Void> deleteComment(@PathVariable int id) {
-        savedMangaService.deleteSavedManga(id);
+    //TODO: Works in bruno but no exeption handling
+    @DeleteMapping("/user/manga/{savedmangaid}/{userid}")
+    public ResponseEntity<Void> deleteSavedManga(@PathVariable int savedmangaid, @PathVariable int userid) {
+        savedMangaService.deleteSavedManga(savedmangaid, userid);
         return ResponseEntity.noContent().build();
     }
 }

@@ -43,7 +43,11 @@ public class SavedMangaService {
         return savedManga.getId();
     }
 
-    public void deleteSavedManga(int id){
-        savedMangaRepository.deleteById(id);
+    public void deleteSavedManga(int savedMangaId, int userId) {
+        SavedManga savedManga = savedMangaRepository.findByMangaId(savedMangaId).stream()
+                .filter(savedManga1 -> savedManga1.getUser().getId() == userId)
+                .findFirst()
+                .orElseThrow(() -> new NoSuchElementException("Saved manga not found with id: " + savedMangaId));
+        savedMangaRepository.delete(savedManga);
     }
 }

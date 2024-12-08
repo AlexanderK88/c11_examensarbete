@@ -18,18 +18,21 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("/users")
+    //TODO: Works in bruno but no exeption handling
+        @GetMapping("/users")
     public List<UserDto> getAllUsers() {
         List<UserDto> user = userService.getAllUsers();
         return user;
     }
 
-    @GetMapping("/user/{id}")
+    //TODO: Works in bruno but no exeption handling
+        @GetMapping("/user/{id}")
     public List<UserDto> getUsersById(@PathVariable int id) {
         List<UserDto> user = userService.getUsersById(id);
         return user;
     }
 
+    //TODO: Works in bruno but no exeption handling
     @PostMapping("/user/")
     public ResponseEntity<Void> AddUser(@RequestBody UserDto userDto) {
         int id = userService.addUser(userDto);
