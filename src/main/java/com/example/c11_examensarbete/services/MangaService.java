@@ -6,6 +6,10 @@ import com.example.c11_examensarbete.dtos.ImageDto;
 import com.example.c11_examensarbete.dtos.MangaDto;
 import com.example.c11_examensarbete.repositories.ImageRepository;
 import com.example.c11_examensarbete.repositories.MangaRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -24,11 +28,10 @@ public class MangaService {
         this.imageRepository = imageRepository;
     }
 
-    public List<MangaDto> getAllMangas() {
-        return mangaRepository.findAll().stream()
-                .map(MangaDto::fromManga)
-                .toList()
-                .subList(0, 25);
+    public Page<MangaDto> getAllMangas(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return mangaRepository.findAll(pageable)
+                .map(MangaDto::fromManga);
     }
 
     public List<MangaDto> getMangaById(int id) {
@@ -93,6 +96,34 @@ public class MangaService {
                 .subList(0, 10);
     }
 
+    public Page<MangaDto> getSortedManga(
+            int page,
+            int size,
+            String sort,
+            String sortDirection,
+            List<String> types) {
+
+
+        Sort.Direction direction = Sort.Direction.ASC;
+        if ("desc".equalsIgnoreCase(sortDirection)) {
+            direction = Sort.Direction.DESC;
+        }
+
+        Pageable pageable = PageRequest.of(
+                page,
+                size,
+                Sort.by(new Sort.Order(direction, sort))
+        );
+
+        if (types != null && !types.isEmpty()) {
+            return mangaRepository.findAllByTypeIn(types, pageable)
+                    .map(MangaDto::fromManga);
+        }
+
+        return mangaRepository.findAll(pageable)
+                .map(MangaDto::fromManga);
+    }
+
     public List<MangaDto> getMostReadManga() {
         return mangaRepository.findAll().stream()
                 .sorted((m1, m2) -> {
@@ -122,5 +153,11 @@ public class MangaService {
                 .map(ImageDto::fromImage)
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException("No images found for manga with id: " + id));
+    }
+
+    public List<ImageDto> getAllImages() {
+        return imageRepository.findAll().stream()
+                .map(ImageDto::fromImage)
+                .toList();
     }
 }

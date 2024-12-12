@@ -2,10 +2,8 @@ package com.example.c11_examensarbete.controllers;
 
 import com.example.c11_examensarbete.dtos.MangaDto;
 import com.example.c11_examensarbete.services.MangaService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.data.domain.Page;
+import org.springframework.web.bind.annotation.*;
 import com.example.c11_examensarbete.dtos.AuthorDto;
 import com.example.c11_examensarbete.dtos.GenreDto;
 import com.example.c11_examensarbete.dtos.ImageDto;
@@ -24,9 +22,11 @@ public class MangaController {
 
     //TODO: Works in bruno but no exeption handling
     @GetMapping("/manga")
-    public List<MangaDto> getAllMangas() {
-        List<MangaDto> manga = mangaService.getAllMangas();
-        return manga;
+    public Page<MangaDto> getAllMangas(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "25") int size
+    ) {
+        return mangaService.getAllMangas(page, size);
     }
 
     //TODO: Works in bruno but no exeption handling
@@ -76,6 +76,17 @@ public class MangaController {
     public List<MangaDto> getPopularManga() {
         List<MangaDto> manga = mangaService.getPopularManga();
         return manga;
+    }
+
+    @GetMapping("/manga/sorted")
+    public Page<MangaDto> getPopularMangas(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "25") int size,
+            @RequestParam(defaultValue = "popularity") String sort,
+            @RequestParam(defaultValue = "asc") String sortDirection,
+            @RequestParam(required = false) List<String> types
+    ) {
+        return mangaService.getSortedManga(page, size, sort, sortDirection, types );
     }
 
     //Works in bruno but no exeption handling
