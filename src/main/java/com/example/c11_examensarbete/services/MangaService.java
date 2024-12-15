@@ -40,12 +40,14 @@ public class MangaService {
                 .toList();
     }
 
-    public List<MangaDto> getMangaByGenre(int id) {
-        return mangaRepository.findAll().stream()
-                .filter(manga -> manga.getGenres().stream().anyMatch(genre -> genre.getId() == id))
-                .map(MangaDto::fromManga)
-                .toList()
-                .subList(0, 25);
+    public Page<MangaDto> getMangaByGenre(int id, int page, int size) {
+        Pageable pageable = PageRequest.of(
+                page,
+                size,
+                Sort.by(Sort.Order.asc("popularity"))
+        );
+        return mangaRepository.findAllByGenresId(id, pageable)
+                .map(MangaDto::fromManga);
     }
 
     public List<GenreDto> getGenreByManga(int id) {
@@ -101,7 +103,8 @@ public class MangaService {
             int size,
             String sort,
             String sortDirection,
-            List<String> types) {
+            List<String> types,
+            String search) {
 
 
         Sort.Direction direction = Sort.Direction.ASC;
@@ -115,11 +118,18 @@ public class MangaService {
                 Sort.by(new Sort.Order(direction, sort))
         );
 
-        if (types != null && !types.isEmpty()) {
+        if (search != null && !search.isEmpty() && types != null && !types.isEmpty()) {
+            return mangaRepository.findAllByTitleContainingAndTypeIn(search, types, pageable)
+                    .map(MangaDto::fromManga);
+        } else if (search != null && !search.isEmpty()) {
+            return mangaRepository.findAllByTitleContaining(search, pageable)
+                    .map(MangaDto::fromManga);
+        } else if (types != null && !types.isEmpty()) {
             return mangaRepository.findAllByTypeIn(types, pageable)
                     .map(MangaDto::fromManga);
         }
 
+        // Default case: No search or type filtering
         return mangaRepository.findAll(pageable)
                 .map(MangaDto::fromManga);
     }
@@ -159,5 +169,11 @@ public class MangaService {
         return imageRepository.findAll().stream()
                 .map(ImageDto::fromImage)
                 .toList();
+    }
+
+    public Page<MangaDto> getMangaBySearch(String search, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return mangaRepository.findAllByTitleContaining(search, pageable)
+                .map(MangaDto::fromManga);
     }
 }

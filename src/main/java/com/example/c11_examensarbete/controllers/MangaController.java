@@ -38,9 +38,10 @@ public class MangaController {
 
     //TODO: Works in bruno but no exeption handling
     @GetMapping("/manga/genre/{id}")
-    public List<MangaDto> getMangaByGenre(@PathVariable int id) {
-        List<MangaDto> manga = mangaService.getMangaByGenre(id);
-        return manga;
+    public Page<MangaDto> getMangaByGenre(@PathVariable int id,
+                                          @RequestParam(defaultValue = "0") int page,
+                                          @RequestParam(defaultValue = "25") int size) {
+        return mangaService.getMangaByGenre(id, page, size); 
     }
 
     //TODO: Works in bruno but no exeption handling
@@ -84,9 +85,10 @@ public class MangaController {
             @RequestParam(defaultValue = "25") int size,
             @RequestParam(defaultValue = "popularity") String sort,
             @RequestParam(defaultValue = "asc") String sortDirection,
-            @RequestParam(required = false) List<String> types
+            @RequestParam(required = false) List<String> types,
+            @RequestParam(required = false) String search
     ) {
-        return mangaService.getSortedManga(page, size, sort, sortDirection, types );
+        return mangaService.getSortedManga(page, size, sort, sortDirection, types, search );
     }
 
     //Works in bruno but no exeption handling
@@ -108,5 +110,17 @@ public class MangaController {
     public ImageDto getImagesByManga(@PathVariable int id) {
         ImageDto image = mangaService.getImagesByManga(id);
                 return image;
+    }
+
+    @GetMapping("/manga/search")
+    public Page<MangaDto> searchManga(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "25") int size,
+            @RequestParam String query
+    ) {
+        if (query.isBlank()) {
+            return Page.empty();
+        }
+        return mangaService.getMangaBySearch(query, page, size);
     }
 }

@@ -59,6 +59,7 @@ public class MangaWebApiService {
     public void fetchAndSaveMangas() {
         int currentPage = 1;
         boolean hasNextPage = true;
+        int mangaCount = 0;
 
         while (hasNextPage) {
             try {
@@ -75,11 +76,15 @@ public class MangaWebApiService {
                     MangaDto mangaDto = extractMangaDto(mangaNode);
                     if (mangaDto != null) {
                         saveManga(mangaDto);
+                        mangaCount++;
+                        if (mangaCount % 500 == 0) {
+                            System.out.println("Fetched and saved " + mangaCount + " manga so far.");
+                        }
                     }
                 }
                 // Be kind to the API by introducing a delay
 
-                Thread.sleep(1200); // Wait for 3 second between requests
+                Thread.sleep(1200);
                 // Increment the page
                 currentPage++;
 
