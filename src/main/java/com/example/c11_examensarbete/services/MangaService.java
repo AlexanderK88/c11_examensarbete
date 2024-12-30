@@ -104,6 +104,7 @@ public class MangaService {
             String sort,
             String sortDirection,
             List<String> types,
+            String genre,
             String search) {
 
 
@@ -124,8 +125,14 @@ public class MangaService {
         } else if (search != null && !search.isEmpty()) {
             return mangaRepository.findAllByTitleContaining(search, pageable)
                     .map(MangaDto::fromManga);
+        } else if (types != null && !types.isEmpty() && genre != null && !genre.isEmpty()) {
+            return mangaRepository.findAllByTypeInAndGenresName(types, genre, pageable)
+                    .map(MangaDto::fromManga);
         } else if (types != null && !types.isEmpty()) {
             return mangaRepository.findAllByTypeIn(types, pageable)
+                    .map(MangaDto::fromManga);
+        } else if(genre != null && !genre.isEmpty()) {
+            return mangaRepository.findAllByGenresName(genre, pageable)
                     .map(MangaDto::fromManga);
         }
 

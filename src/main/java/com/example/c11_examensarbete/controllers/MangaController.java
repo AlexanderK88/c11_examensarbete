@@ -41,7 +41,7 @@ public class MangaController {
     public Page<MangaDto> getMangaByGenre(@PathVariable int id,
                                           @RequestParam(defaultValue = "0") int page,
                                           @RequestParam(defaultValue = "25") int size) {
-        return mangaService.getMangaByGenre(id, page, size); 
+        return mangaService.getMangaByGenre(id, page, size);
     }
 
     //TODO: Works in bruno but no exeption handling
@@ -86,9 +86,10 @@ public class MangaController {
             @RequestParam(defaultValue = "popularity") String sort,
             @RequestParam(defaultValue = "asc") String sortDirection,
             @RequestParam(required = false) List<String> types,
+            @RequestParam(required = false) String genre,
             @RequestParam(required = false) String search
     ) {
-        return mangaService.getSortedManga(page, size, sort, sortDirection, types, search );
+        return mangaService.getSortedManga(page, size, sort, sortDirection, types, genre, search );
     }
 
     //Works in bruno but no exeption handling
