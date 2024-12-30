@@ -65,12 +65,12 @@ CREATE TABLE IF NOT EXISTS users (
 );
 
 CREATE TABLE IF NOT EXISTS saved_manga (
+                                id INT PRIMARY KEY AUTO_INCREMENT,
                                 user_id INT,
                                 manga_id INT,
-                                list_id INT,
-                                PRIMARY KEY (user_id, manga_id),
                                 FOREIGN KEY (user_id) REFERENCES users(id),
-                                FOREIGN KEY (manga_id) REFERENCES manga(id)
+                                FOREIGN KEY (manga_id) REFERENCES manga(id),
+                                UNIQUE (manga_id, user_id)
 );
 
 CREATE TABLE IF NOT EXISTS lists (
@@ -79,6 +79,14 @@ CREATE TABLE IF NOT EXISTS lists (
                                 description TEXT,
                                 user_id INT,
                                 FOREIGN KEY (user_id) REFERENCES users(id)
+);
+
+CREATE TABLE IF NOT EXISTS list_manga (
+                                list_id INT,
+                                saved_manga_id INT,
+                                PRIMARY KEY (list_id, saved_manga_id),
+                                FOREIGN KEY (list_id) REFERENCES lists(id),
+                                FOREIGN KEY (saved_manga_id) REFERENCES saved_manga(id)
 );
 
 CREATE TABLE IF NOT EXISTS notifications (

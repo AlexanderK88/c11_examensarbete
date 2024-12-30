@@ -12,29 +12,32 @@ import java.util.List;
 @RequestMapping("/api/v1/review/")
 public class CommentController {
 
-
     CommentService commentService;
 
     public CommentController(CommentService commentService){
         this.commentService = commentService;
     }
 
+    //TODO: works in bruno but no exception handling
     @GetMapping("/comments/{reviewid}")
     public List<CommentDto> getCommentsByReview(@PathVariable int reviewid) {
         return commentService.getCommentsByReview(reviewid);
     }
 
+    //TODO: works in bruno but no exception handling
     @GetMapping("/comments/user/{id}")
     public List<CommentDto> getCommentsByUser(@PathVariable int id) {
         return commentService.getCommentsByUser(id);
     }
 
-    @PostMapping("/comment/{reviewid}")
-    public ResponseEntity<Void> addComment(@RequestBody CommentDto commentDto) {
-        int id = commentService.addComment(commentDto);
+    //TODO: Works in bruno but no exeption handling
+    @PostMapping("/comment/{reviewId}")
+    public ResponseEntity<Void> addComment(@RequestBody CommentDto commentDto, @PathVariable int reviewId) {
+        int id = commentService.addComment(commentDto, reviewId);
         return ResponseEntity.created(URI.create("/reviews/comments/" + id)).build();
     }
 
+    //TODO: works in bruno but no exception handling
     @DeleteMapping("/comment/{id}")
     public ResponseEntity<Void> deleteComment(@PathVariable int id) {
         commentService.deleteComment(id);

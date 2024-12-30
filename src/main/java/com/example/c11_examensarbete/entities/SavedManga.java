@@ -4,25 +4,32 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.LinkedHashSet;
+import java.util.Set;
+
 @Getter
 @Setter
 @Entity
 @Table(name = "saved_manga", schema = "mydatabase")
 public class SavedManga {
-    @EmbeddedId
-    private SavedMangaId id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
+    private Integer id;
 
-    @MapsId("userId")
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "user_id", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
     private User user;
 
-    @MapsId("mangaId")
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "manga_id", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "manga_id")
     private Manga manga;
 
-    @Column(name = "list_id")
-    private Integer listId;
-
+    @ManyToMany
+    @JoinTable(
+            name = "list_manga",
+            joinColumns = @JoinColumn(name = "saved_manga_id"),
+            inverseJoinColumns = @JoinColumn(name = "list_id")
+    )
+    private Set<List> lists = new LinkedHashSet<>();
 }

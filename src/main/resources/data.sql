@@ -17,23 +17,23 @@
 #     (5, 'Critics Choice', 'Highly rated by critics', 5);
 #
 #
-# INSERT INTO saved_manga (user_id, manga_id, list_id)
+# INSERT INTO saved_manga (user_id, manga_id)
 # VALUES
-#     (1, 101, 1),
-#     (1, 102, 1),
-#     (1, 103, 1),
-#     (2, 102, 2),
-#     (2, 202, 2),
-#     (2, 402, 2),
-#     (3, 101, 3),
-#     (3, 103, 3),
-#     (3, 301, 3),
-#     (4, 203, 4),
-#     (4, 302, 4),
-#     (4, 403, 4),
-#     (5, 301, 5),
-#     (5, 302, 5),
-#     (5, 201, 5);
+#     (1, 101),
+#     (1, 102),
+#     (1, 103),
+#     (2, 102),
+#     (2, 202),
+#     (2, 402),
+#     (3, 101),
+#     (3, 103),
+#     (3, 301),
+#     (4, 203),
+#     (4, 302),
+#     (4, 403),
+#     (5, 301),
+#     (5, 302),
+#     (5, 201);
 #
 # -- REVIEWS
 # INSERT INTO reviews (id, review_text, title, spoiler, rating, user_id, manga_id, timestamp)
