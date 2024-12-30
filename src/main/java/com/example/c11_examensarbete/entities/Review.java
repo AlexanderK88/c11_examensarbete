@@ -8,6 +8,8 @@ import org.hibernate.annotations.ColumnDefault;
 
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -44,6 +46,9 @@ public class Review {
 
     @Column(name = "timestamp")
     private Instant timestamp;
+
+    @OneToMany(mappedBy = "review")
+    private Set<Comment> comments = new LinkedHashSet<>();
 
     @PrePersist
     protected void onCreate() {
