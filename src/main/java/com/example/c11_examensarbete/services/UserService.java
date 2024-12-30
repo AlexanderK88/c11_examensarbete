@@ -5,7 +5,10 @@ import com.example.c11_examensarbete.entities.User;
 import com.example.c11_examensarbete.repositories.UserRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -28,13 +31,31 @@ public class UserService {
                 .toList();
     }
 
-    public int addUser(UserDto userDto) {
+    public int addUser(UserDto userDto, String oauthId, String source) {
         User user = new User();
         user.setEmail(userDto.email());
         user.setUsername(userDto.username());
-        user.setPassword(userDto.password());
         user.setRole(userDto.role());
+        user.setOauthProviderId(oauthId); // Save OAuth ID
+        user.setOauthProvider(source); // Save registration source (e.g., GITHUB)
+        user.setCreatedAt(Instant.now()); // Set created timestamp
         userRepository.save(user);
         return user.getId();
+    }
+
+    public User getUserById(int id){
+        return userRepository.findById(id).orElse(null);
+    }
+
+    public Optional<User> getUserByEmail(String email){
+        return userRepository.findByEmail(email);
+    }
+
+    public UserDto getUserDtoByUsername(String username){
+        return UserDto.fromUser(userRepository.findByUsername(username));
+    }
+
+    public int updateUser(User user){
+        return userRepository.save(user).getId();
     }
 }
