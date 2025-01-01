@@ -4,6 +4,7 @@ import com.example.c11_examensarbete.dtos.AuthorDto;
 import com.example.c11_examensarbete.dtos.GenreDto;
 import com.example.c11_examensarbete.dtos.ImageDto;
 import com.example.c11_examensarbete.dtos.MangaDto;
+import com.example.c11_examensarbete.entities.Manga;
 import com.example.c11_examensarbete.repositories.ImageRepository;
 import com.example.c11_examensarbete.repositories.MangaRepository;
 import org.springframework.data.domain.Page;
@@ -16,6 +17,7 @@ import java.math.BigDecimal;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class MangaService {
@@ -182,5 +184,12 @@ public class MangaService {
         Pageable pageable = PageRequest.of(page, size);
         return mangaRepository.findAllByTitleContaining(search, pageable)
                 .map(MangaDto::fromManga);
+    }
+
+    public List<MangaDto> getMangaByIds(List<Integer> mangaIds) {
+        List<Manga> mangas = mangaRepository.findAllById(mangaIds);
+        return mangas.stream()
+                .map(MangaDto::fromManga) // Assuming MangaDto can be created from Manga entity
+                .collect(Collectors.toList());
     }
 }

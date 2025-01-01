@@ -33,12 +33,16 @@ public class SavedMangaService {
     }
 
     public int saveManga(SavedMangaDto savedMangaDto) {
-        System.out.println(savedMangaDto.manga_id());
+        System.out.println(savedMangaDto.mangaid());
         SavedManga savedManga = new SavedManga();
-        savedManga.setManga(mangaRepository.findById(savedMangaDto.manga_id())
-                .orElseThrow(() -> new NoSuchElementException("Manga not found with id: " + savedMangaDto.manga_id())));
-        savedManga.setUser(userRepository.findById(savedMangaDto.user_id())
-                .orElseThrow(() -> new NoSuchElementException("User not found with id: " + savedMangaDto.user_id())));
+        savedManga.setManga(mangaRepository.findById(savedMangaDto.mangaid())
+                .orElseThrow(() -> new NoSuchElementException("Manga not found with id: " + savedMangaDto.mangaid())));
+        savedManga.setUser(userRepository.findById(savedMangaDto.userid())
+                .orElseThrow(() -> new NoSuchElementException("User not found with id: " + savedMangaDto.userid())));
+
+        savedManga.setStatus(savedMangaDto.status());
+        savedManga.setPersonalRating(savedMangaDto.score());
+        savedManga.setCurrentChapter(savedMangaDto.chaptersRead());
         savedMangaRepository.save(savedManga);
         return savedManga.getId();
     }

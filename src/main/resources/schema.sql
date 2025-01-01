@@ -84,6 +84,11 @@ CREATE TABLE IF NOT EXISTS saved_manga
     id       INT PRIMARY KEY AUTO_INCREMENT,
     user_id  INT,
     manga_id INT,
+    personal_rating FLOAT DEFAULT NULL,
+    current_chapter INT DEFAULT 0,
+    status VARCHAR(50) DEFAULT 'not started',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users (id),
     FOREIGN KEY (manga_id) REFERENCES manga (id),
     UNIQUE (manga_id, user_id)
