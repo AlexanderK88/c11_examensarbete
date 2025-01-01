@@ -29,10 +29,18 @@ public class UserController {
     }
 
 
+
+
     //TODO: Works in bruno but no exeption handling
     @GetMapping("/users")
     public List<UserDto> getAllUsers() {
         List<UserDto> user = userService.getAllUsers();
+        return user;
+    }
+
+    @GetMapping("/user/data/{oauthId}")
+    public UserDto getUsersByOauthId(@PathVariable String oauthId) {
+       UserDto user = userService.getUsersByOauthId(oauthId);
         return user;
     }
 

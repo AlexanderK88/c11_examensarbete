@@ -25,6 +25,11 @@ public class UserService {
                 .toList();
     }
 
+    public UserDto getUsersByOauthId(String oauthId){
+        User user = userRepository.findByOauthProviderId(oauthId);
+        return UserDto.fromUser(user);
+    }
+
     public List<UserDto> getUsersById(int id){
         return userRepository.findById(id).stream()
                 .map(UserDto::fromUser)
@@ -58,4 +63,6 @@ public class UserService {
     public int updateUser(User user){
         return userRepository.save(user).getId();
     }
+
+
 }

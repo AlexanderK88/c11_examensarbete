@@ -40,6 +40,7 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
         String email = oAuth2User.getAttribute("email");
         String name = oAuth2User.getAttribute("name");
         String picture = oAuth2User.getAttribute("avatar_url");
+        int oAuthId = oAuth2User.getAttribute("id");
 
         // Check if user exists in the database, and save/update accordingly
         userRepository.findByEmail(email).ifPresentOrElse(
@@ -48,6 +49,8 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
                     user.setUsername(name);
                     user.setProfilePictureUrl(picture);
                     user.setAccessToken(accessToken);
+                    user.setOauthProvider(clientRegistrationId);
+                    user.setOauthProviderId(String.valueOf(oAuthId));
                     user.setUpdatedAt(Instant.now());
                     if(user.getRole().isEmpty()) {
                         user.setRole("USER");
@@ -60,6 +63,8 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
                     User newUser = new User();
                     newUser.setEmail(email);
                     newUser.setUsername(name);
+                    newUser.setOauthProvider(clientRegistrationId);
+                    newUser.setOauthProviderId(String.valueOf(oAuthId));
                     newUser.setProfilePictureUrl(picture);
                     newUser.setAccessToken(accessToken);
                     newUser.setCreatedAt(Instant.now());
