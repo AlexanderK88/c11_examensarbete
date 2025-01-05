@@ -27,7 +27,7 @@ public class SavedMangaController {
 
     //TODO: Works in bruno but no exeption handling
     @GetMapping("/user/{userid}/mangas")
-    public List<MangaDto> getUsersSavedMangas(@PathVariable int userid) {
+    public List<MangaDto> getUsersMangas(@PathVariable int userid) {
         // Fetch the SavedMangaDto for the user
         List<SavedMangaDto> savedMangas = savedMangaService.getUsersSavedMangas(userid);
 
@@ -40,6 +40,11 @@ public class SavedMangaController {
         List<MangaDto> mangaDtos = mangaService.getMangaByIds(mangaIds);
 
         return mangaDtos;
+    }
+
+    @GetMapping("/user/{userid}/savedmanga")
+    public List<SavedMangaDto> getUsersSavedManga(@PathVariable int userid) {
+        return savedMangaService.getUsersSavedMangas(userid);
     }
 
     //TODO: Works in bruno but no exeption handling

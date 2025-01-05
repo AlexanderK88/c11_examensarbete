@@ -43,6 +43,7 @@ public class SavedMangaService {
         savedManga.setStatus(savedMangaDto.status());
         savedManga.setPersonalRating(savedMangaDto.score());
         savedManga.setCurrentChapter(savedMangaDto.chaptersRead());
+        savedManga.setMangaTitle(savedMangaDto.title());
         savedMangaRepository.save(savedManga);
         return savedManga.getId();
     }

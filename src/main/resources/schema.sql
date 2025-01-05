@@ -91,7 +91,8 @@ CREATE TABLE IF NOT EXISTS saved_manga
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users (id),
     FOREIGN KEY (manga_id) REFERENCES manga (id),
-    UNIQUE (manga_id, user_id)
+    UNIQUE (manga_id, user_id),
+    manga_title VARCHAR(255)
 );
 
 CREATE TABLE IF NOT EXISTS lists
