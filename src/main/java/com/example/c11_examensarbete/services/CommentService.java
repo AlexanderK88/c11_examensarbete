@@ -36,8 +36,8 @@ public class CommentService {
                 .toList();
     }
 
-    public int addComment(CommentDto commentDto, int reviewId){
-        if(reviewId == 0){
+    public int addComment(CommentDto commentDto){
+        if(commentDto.reviewId() == 0){
             throw new IllegalArgumentException("Review ID must not be 0");
         }
         if(commentDto.userId() == null){
@@ -51,7 +51,7 @@ public class CommentService {
         }
         Comment comment = new Comment();
         comment.setCommentText(commentDto.commentText());
-        comment.setReview(reviewRepository.findById(reviewId)
+        comment.setReview(reviewRepository.findById(commentDto.reviewId())
                 .orElseThrow(() -> new IllegalArgumentException("Review not found")));
         comment.setUser(userRepository.findById(commentDto.userId())
                 .orElseThrow(() -> new IllegalArgumentException("User not found")));

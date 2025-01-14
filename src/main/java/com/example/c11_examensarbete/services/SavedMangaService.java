@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @Service
 public class SavedMangaService {
@@ -45,6 +46,32 @@ public class SavedMangaService {
         savedManga.setCurrentChapter(savedMangaDto.chaptersRead());
         savedManga.setMangaTitle(savedMangaDto.title());
         savedMangaRepository.save(savedManga);
+        return savedManga.getId();
+    }
+
+    public int editManga(SavedMangaDto savedMangaDto) {
+        System.out.println("MangaId: " + savedMangaDto.mangaid());
+        System.out.println("UserId: " + savedMangaDto.userid());
+
+        List<SavedManga> mangaList = savedMangaRepository.findByMangaId(savedMangaDto.mangaid());
+        if (mangaList.isEmpty()) {
+            throw new NoSuchElementException("No manga found with mangaId: " + savedMangaDto.mangaid());
+        }
+
+        mangaList.forEach(manga -> System.out.println("Found manga: " + manga));
+
+        SavedManga savedManga = mangaList.stream()
+                .filter(savedManga1 -> savedManga1.getUser().getId().equals(savedMangaDto.userid()))
+                .findFirst()
+                .orElseThrow(() -> new NoSuchElementException("Saved manga not found with id: " + savedMangaDto.mangaid() + " and user id: " + savedMangaDto.userid()));
+
+        savedManga.setStatus(savedMangaDto.status());
+        savedManga.setPersonalRating(savedMangaDto.score());
+        savedManga.setCurrentChapter(savedMangaDto.chaptersRead());
+
+        SavedManga updatedManga = savedMangaRepository.save(savedManga);
+        System.out.println("Updated manga: " + updatedManga);
+
         return savedManga.getId();
     }
 

@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.util.Arrays;
 import java.util.List;
 
 @RestController
@@ -32,9 +33,14 @@ public class ListController {
     }
 
     //TODO: Works in bruno but no exeption handling
-    @PostMapping("/user/list/{listid}/{savedmangaid}")
-    public ResponseEntity<Void> addToList(@PathVariable int listid, @PathVariable int savedmangaid) {
-        int id = listService.addSavedMangaToList(listid, savedmangaid);
+    @PostMapping("/user/list/add/{listid}")
+    public ResponseEntity<Void> addToList(@PathVariable int listid, @RequestBody List<Integer> savedMangaIds) {
+        if (savedMangaIds == null || savedMangaIds.isEmpty()) {
+            throw new IllegalArgumentException("No manga ID provided");
+        }
+
+        savedMangaIds.forEach(id -> listService.addSavedMangaToList(listid, id));
+
         return ResponseEntity.created(URI.create("/user/list/" + listid)).build();
     }
 

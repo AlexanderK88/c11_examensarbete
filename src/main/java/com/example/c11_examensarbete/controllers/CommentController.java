@@ -31,9 +31,9 @@ public class CommentController {
     }
 
     //TODO: Works in bruno but no exeption handling
-    @PostMapping("/comment/{reviewId}")
-    public ResponseEntity<Void> addComment(@RequestBody CommentDto commentDto, @PathVariable int reviewId) {
-        int id = commentService.addComment(commentDto, reviewId);
+    @PostMapping("/comment")
+    public ResponseEntity<Void> addComment(@RequestBody CommentDto commentDto) {
+        int id = commentService.addComment(commentDto);
         return ResponseEntity.created(URI.create("/reviews/comments/" + id)).build();
     }
 
