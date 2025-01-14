@@ -7,7 +7,8 @@ public record SavedMangaDto(
         int userid,
         Float score,
         Integer chaptersRead,
-        String status
+        String status,
+        String title
 ) {
     public static SavedMangaDto fromSavedManga(SavedManga savedManga) {
         return new SavedMangaDto(
@@ -15,7 +16,8 @@ public record SavedMangaDto(
                 savedManga.getUser().getId(),
                 savedManga.getPersonalRating(),
                 savedManga.getCurrentChapter(),
-                savedManga.getStatus()
+                savedManga.getStatus(),
+                savedManga.getManga().getTitle()
         );
     }
 }

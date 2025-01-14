@@ -57,6 +57,10 @@ public class SavedManga {
     @Column(name = "updated_at")
     private Instant updatedAt;
 
+    @Size(max = 255)
+    @Column(name = "manga_title")
+    private String mangaTitle;
+
     // PrePersist and PreUpdate lifecycle callbacks to set timestamps
     @PrePersist
     protected void onCreate() {

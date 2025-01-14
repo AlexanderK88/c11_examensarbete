@@ -48,7 +48,6 @@ public class ReviewService {
         }
 
         Review review = new Review();
-        review.setTitle(reviewDto.title());
         review.setReviewText(reviewDto.reviewText());
         review.setSpoiler(reviewDto.spoiler());
         review.setRating(reviewDto.rating());
