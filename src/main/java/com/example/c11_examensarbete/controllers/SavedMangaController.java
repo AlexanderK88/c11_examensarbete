@@ -54,6 +54,13 @@ public class SavedMangaController {
         return ResponseEntity.created(URI.create("/reviews/comments/" + id)).build();
     }
 
+    @PutMapping("/user/manga/edit")
+    public ResponseEntity<Void> editSavedManga(@RequestBody SavedMangaDto savedMangaDto) {
+        int id = savedMangaService.editManga(savedMangaDto);
+        return ResponseEntity.created(URI.create("/reviews/comments/" + id)).build();
+    }
+
+
     //TODO: Works in bruno but no exeption handling
     @DeleteMapping("/user/manga/{savedmangaid}/{userid}")
     public ResponseEntity<Void> deleteSavedManga(@PathVariable int savedmangaid, @PathVariable int userid) {

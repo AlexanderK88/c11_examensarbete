@@ -7,6 +7,7 @@ import java.time.Instant;
 import java.util.List;
 
 public record ReviewDto(
+        Integer reviewId,
         String title,
         String reviewText,
         boolean spoiler,
@@ -14,10 +15,12 @@ public record ReviewDto(
         Integer userId,
         Integer mangaId,
         List<CommentDto> comments,
-        String username
+        String username,
+        Instant createdAt
         ) {
     public static ReviewDto fromReview(Review review) {
         return new ReviewDto(
+                review.getId(),
                 review.getTitle(),
                 review.getReviewText(),
                 review.getSpoiler(),
@@ -25,7 +28,8 @@ public record ReviewDto(
                 review.getUser().getId(),
                 review.getManga().getId(),
                 review.getComments().stream().map(CommentDto::fromComment).toList(),
-                review.getUser().getUsername()
+                review.getUser().getUsername(),
+                review.getTimestamp()
         );
     }
 }

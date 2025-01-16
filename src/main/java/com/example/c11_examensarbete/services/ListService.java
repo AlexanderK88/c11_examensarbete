@@ -11,6 +11,7 @@ import com.example.c11_examensarbete.repositories.SavedMangaRepository;
 import com.example.c11_examensarbete.repositories.UserRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -56,9 +57,8 @@ public class ListService {
     public int addList(ListDto listDto) {
         List list = new List();
         list.setListName(listDto.listName());
-        list.setDescription(listDto.description());
-        list.setUser(userRepository.findById(listDto.user_id())
-                .orElseThrow(() -> new IllegalArgumentException("User not found with id: " + listDto.user_id())));
+        list.setUser(userRepository.findById(listDto.userId())
+                .orElseThrow(() -> new IllegalArgumentException("User not found with id: " + listDto.userId())));
 
         listRepository.save(list);
 
@@ -69,8 +69,8 @@ public class ListService {
     public int addSavedMangaToList(int listId, int savedMangaId) {
         List list = listRepository.findById(listId)
                 .orElseThrow(() -> new IllegalArgumentException("List not found with id: " + listId));
-        SavedManga savedManga = savedMangaRepository.findById(savedMangaId).stream()
-                .filter(savedManga1 -> savedManga1.getUser().getId() == list.getUser().getId())
+        SavedManga savedManga = savedMangaRepository.findByMangaId(savedMangaId).stream()
+                .filter(savedManga1 -> Objects.equals(savedManga1.getUser().getId(), list.getUser().getId()))
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException("SavedManga not found with id: " + savedMangaId));
         list.getSavedMangas().add(savedManga);

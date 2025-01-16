@@ -3,6 +3,7 @@ package com.example.c11_examensarbete.dtos;
 import com.example.c11_examensarbete.entities.SavedManga;
 
 public record SavedMangaDto(
+        int id,
         int mangaid,
         int userid,
         Float score,
@@ -12,6 +13,7 @@ public record SavedMangaDto(
 ) {
     public static SavedMangaDto fromSavedManga(SavedManga savedManga) {
         return new SavedMangaDto(
+                savedManga.getId(),
                 savedManga.getManga().getId(),
                 savedManga.getUser().getId(),
                 savedManga.getPersonalRating(),
