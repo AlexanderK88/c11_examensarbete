@@ -50,4 +50,10 @@ public class ListController {
         int id = listService.addList(listDto);
         return ResponseEntity.created(URI.create("/user/list/" + id)).build();
     }
+
+    @DeleteMapping("/user/list/{listid}")
+    public ResponseEntity<Void> deleteList(@PathVariable int listid) {
+        listService.deleteList(listid);
+        return ResponseEntity.noContent().build();
+    }
 }

@@ -78,5 +78,8 @@ public class ListService {
 
         return list.getId();
     }
+    public void deleteList(int id) {
+        listRepository.deleteById(id);
+    }
 }
 
