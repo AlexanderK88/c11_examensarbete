@@ -5,6 +5,7 @@ import com.example.c11_examensarbete.entities.Comment;
 import java.time.Instant;
 
 public record CommentDto(
+        int id,
         String commentText,
         Integer reviewId,
         String username,
@@ -13,6 +14,7 @@ public record CommentDto(
 ) {
     public static CommentDto fromComment(Comment comment) {
         return new CommentDto(
+                comment.getId(),
                 comment.getCommentText(),
                 comment.getReview().getId(),
                 comment.getUser().getUsername(),
