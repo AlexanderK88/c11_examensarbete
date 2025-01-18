@@ -11,6 +11,8 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
+import static org.springframework.http.HttpMethod.GET;
+
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
@@ -29,7 +31,9 @@ public class SecurityConfig {
         http.csrf(AbstractHttpConfigurer::disable)
                 .cors(c -> c.configurationSource(webConfig))
                 .authorizeHttpRequests(authorizeRequests ->
-                        authorizeRequests.anyRequest().authenticated())
+                        authorizeRequests.requestMatchers(GET, "/remote/api/manga/fetch-all")
+                                .permitAll()
+                                .anyRequest().authenticated())
                 .oauth2Login(oauth2 -> oauth2.successHandler(customAuthenticationSuccessHandler))
                 .logout(logout -> logout
                         .logoutUrl("/logout")

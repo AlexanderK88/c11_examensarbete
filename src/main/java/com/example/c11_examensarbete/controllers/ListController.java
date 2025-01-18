@@ -56,4 +56,10 @@ public class ListController {
         listService.deleteList(listid);
         return ResponseEntity.noContent().build();
     }
+
+    @DeleteMapping("/user/list/{listid}/{mangaid}")
+    public ResponseEntity<Void> deleteList(@PathVariable int listid, @PathVariable int mangaid) {
+        listService.deleteSavedMangaFromList(listid, mangaid);
+        return ResponseEntity.noContent().build();
+    }
 }

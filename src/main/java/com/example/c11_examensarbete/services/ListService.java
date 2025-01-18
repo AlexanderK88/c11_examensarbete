@@ -81,5 +81,12 @@ public class ListService {
     public void deleteList(int id) {
         listRepository.deleteById(id);
     }
+
+    public void deleteSavedMangaFromList(int listId, int mangaId) {
+        List list = listRepository.findById(listId)
+                .orElseThrow(() -> new IllegalArgumentException("List not found with id: " + listId));
+        list.getSavedMangas().removeIf(savedManga -> Objects.equals(savedManga.getId(), mangaId));
+        listRepository.save(list);
+    }
 }
 
