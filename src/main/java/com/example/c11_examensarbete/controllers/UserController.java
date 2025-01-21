@@ -1,6 +1,5 @@
 package com.example.c11_examensarbete.controllers;
 
-
 import com.example.c11_examensarbete.services.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -27,9 +26,6 @@ public class UserController {
             @AuthenticationPrincipal OAuth2User principal) {
         return principal.getAttributes();
     }
-
-
-
 
     //TODO: Works in bruno but no exeption handling
     @GetMapping("/users")

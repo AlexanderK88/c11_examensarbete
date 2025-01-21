@@ -1,6 +1,5 @@
 package com.example.c11_examensarbete.dtos;
 
-
 import com.example.c11_examensarbete.entities.Genre;
 
 public record GenreDto(Integer id, String name) {

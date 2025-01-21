@@ -1,4 +1,5 @@
 package com.example.c11_examensarbete.services;
+
 import com.example.c11_examensarbete.dtos.AuthorDto;
 import com.example.c11_examensarbete.dtos.GenreDto;
 import com.example.c11_examensarbete.dtos.ImageDto;
@@ -18,14 +19,10 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestClient;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
-
-
 
 @Service
 public class MangaWebApiService {

@@ -1,6 +1,5 @@
 package com.example.c11_examensarbete.dtos;
 
-import com.example.c11_examensarbete.entities.Image;
 import com.example.c11_examensarbete.entities.Manga;
 
 import java.math.BigDecimal;
