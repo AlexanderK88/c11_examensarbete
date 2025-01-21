@@ -1,7 +1,5 @@
 package com.example.c11_examensarbete.controllers;
 
-
-import com.example.c11_examensarbete.dtos.CommentDto;
 import com.example.c11_examensarbete.dtos.MangaDto;
 import com.example.c11_examensarbete.dtos.SavedMangaDto;
 import com.example.c11_examensarbete.services.MangaService;
@@ -28,15 +26,12 @@ public class SavedMangaController {
     //TODO: Works in bruno but no exeption handling
     @GetMapping("/user/{userid}/mangas")
     public List<MangaDto> getUsersMangas(@PathVariable int userid) {
-        // Fetch the SavedMangaDto for the user
         List<SavedMangaDto> savedMangas = savedMangaService.getUsersSavedMangas(userid);
 
-        // Collect all the manga IDs from the SavedMangaDto list
         List<Integer> mangaIds = savedMangas.stream()
                 .map(savedManga -> savedManga.mangaid())
                 .collect(Collectors.toList());
 
-        // Fetch all MangaDto objects for the collected manga IDs
         List<MangaDto> mangaDtos = mangaService.getMangaByIds(mangaIds);
 
         return mangaDtos;

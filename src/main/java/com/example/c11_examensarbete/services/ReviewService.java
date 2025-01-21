@@ -4,6 +4,8 @@ import com.example.c11_examensarbete.dtos.ReviewDto;
 import com.example.c11_examensarbete.entities.Manga;
 import com.example.c11_examensarbete.entities.Review;
 import com.example.c11_examensarbete.entities.User;
+import com.example.c11_examensarbete.exceptionMappers.BadRequestExceptionMapper;
+import com.example.c11_examensarbete.exceptionMappers.ResourceNotFoundExceptionMapper;
 import com.example.c11_examensarbete.repositories.MangaRepository;
 import com.example.c11_examensarbete.repositories.ReviewRepository;
 import com.example.c11_examensarbete.repositories.UserRepository;
@@ -25,6 +27,9 @@ public class ReviewService {
     }
 
     public List<ReviewDto> getReviewsByManga(int mangaId) {
+        if(mangaId <= 0 ){
+            throw new BadRequestExceptionMapper("mangaId can not be less than or equals to zero");
+        }
         return reviewRepository.findAll().stream()
                 .filter(review -> review.getManga().getId() == mangaId)
                 .map(ReviewDto::fromReview)
@@ -32,6 +37,9 @@ public class ReviewService {
     }
 
     public List<ReviewDto> getReviewsByUser(int userId) {
+        if(userId <= 0 ){
+            throw new BadRequestExceptionMapper("userId can not be less than or equals to zero");
+        }
         return reviewRepository.findAll().stream()
                 .filter(review -> review.getUser().getId() == userId)
                 .map(ReviewDto::fromReview)
@@ -39,12 +47,15 @@ public class ReviewService {
     }
 
     public int addReview(ReviewDto reviewDto) {
+        if(reviewDto == null) {
+            throw new BadRequestExceptionMapper("reviewDto can not be null");
+        }
 
         if (reviewDto.mangaId() == null) {
-            throw new IllegalArgumentException("Manga ID must not be null");
+            throw new BadRequestExceptionMapper("Manga ID must not be null");
         }
         if (reviewDto.userId() == null) {
-            throw new IllegalArgumentException("User ID must not be null");
+            throw new BadRequestExceptionMapper("User ID must not be null");
         }
 
         Review review = new Review();
@@ -54,12 +65,12 @@ public class ReviewService {
 
         // Fetch the Manga entity by ID
         Manga manga = mangaRepository.findById(reviewDto.mangaId())
-                .orElseThrow(() -> new IllegalArgumentException("Manga not found"));
+                .orElseThrow(() -> new ResourceNotFoundExceptionMapper("Manga not found"));
         review.setManga(manga);
 
         // Fetch the User entity by ID
         User user = userRepository.findById(reviewDto.userId())
-                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+                .orElseThrow(() -> new ResourceNotFoundExceptionMapper("User not found"));
         review.setUser(user);
         reviewRepository.save(review);
         return review.getId();

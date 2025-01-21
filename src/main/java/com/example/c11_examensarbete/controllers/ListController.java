@@ -7,7 +7,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
-import java.util.Arrays;
 import java.util.List;
 
 @RestController
@@ -58,7 +57,7 @@ public class ListController {
     }
 
     @DeleteMapping("/user/list/{listid}/{mangaid}")
-    public ResponseEntity<Void> deleteList(@PathVariable int listid, @PathVariable int mangaid) {
+    public ResponseEntity<Void> deleteFromList(@PathVariable int listid, @PathVariable int mangaid) {
         listService.deleteSavedMangaFromList(listid, mangaid);
         return ResponseEntity.noContent().build();
     }

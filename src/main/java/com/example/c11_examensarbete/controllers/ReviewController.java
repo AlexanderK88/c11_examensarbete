@@ -1,6 +1,5 @@
 package com.example.c11_examensarbete.controllers;
 
-import com.example.c11_examensarbete.services.MangaService;
 import com.example.c11_examensarbete.services.ReviewService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

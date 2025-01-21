@@ -2,11 +2,11 @@ package com.example.c11_examensarbete.services;
 
 import com.example.c11_examensarbete.dtos.UserDto;
 import com.example.c11_examensarbete.entities.User;
+import com.example.c11_examensarbete.exceptionMappers.ResourceNotFoundExceptionMapper;
 import com.example.c11_examensarbete.repositories.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,13 +27,20 @@ public class UserService {
 
     public UserDto getUsersByOauthId(String oauthId){
         User user = userRepository.findByOauthProviderId(oauthId);
+        if(user == null){
+            throw new ResourceNotFoundExceptionMapper("User not found with oauthId: " + oauthId);
+        }
         return UserDto.fromUser(user);
     }
 
     public List<UserDto> getUsersById(int id){
-        return userRepository.findById(id).stream()
+
+       List<UserDto> users = userRepository.findById(id).stream()
                 .map(UserDto::fromUser)
                 .toList();
+       if(users.isEmpty())
+           throw new ResourceNotFoundExceptionMapper("User not found with id: " + id);
+       return users;
     }
 
     public int addUser(UserDto userDto, String oauthId, String source) {
@@ -46,10 +53,6 @@ public class UserService {
         user.setCreatedAt(Instant.now()); // Set created timestamp
         userRepository.save(user);
         return user.getId();
-    }
-
-    public User getUserById(int id){
-        return userRepository.findById(id).orElse(null);
     }
 
     public Optional<User> getUserByEmail(String email){
