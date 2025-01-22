@@ -245,13 +245,9 @@ public class MangaService {
     }
 
     public List<MangaDto> getMangaByIds(List<Integer> mangaIds) {
-        if(mangaIds.isEmpty()){
-            throw new BadRequestExceptionMapper("No manga IDs found");
-        }
+
         List<Manga> mangas = mangaRepository.findAllById(mangaIds);
-        if (mangas.isEmpty()) {
-            throw new ResourceNotFoundExceptionMapper("No mangas found for the given IDs.");
-        }
+
         return mangas.stream()
                 .map(MangaDto::fromManga)
                 .collect(Collectors.toList());

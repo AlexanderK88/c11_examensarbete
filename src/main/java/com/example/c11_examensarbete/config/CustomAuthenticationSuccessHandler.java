@@ -42,10 +42,10 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
         String picture = oAuth2User.getAttribute("avatar_url");
         int oAuthId = oAuth2User.getAttribute("id");
 
-        // Check if user exists in the database, and save/update accordingly
+        // Check if user exists in the database, and save/update accordingly CHANGE TO OAUTHID
         userRepository.findByEmail(email).ifPresentOrElse(
                 user -> {
-                    // Update existing user details
+                    // Update existing user details ADD EMAIL HERE
                     user.setUsername(name);
                     user.setProfilePictureUrl(picture);
                     user.setAccessToken(accessToken);
@@ -72,6 +72,8 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
                     userRepository.save(newUser);
                 }
         );
+
+        //if(!email || !name) response.sendRedirect("http://localhost:5173/profile");
 
         // Redirect the user to the frontend application
         response.sendRedirect("http://localhost:5173/discovery");
