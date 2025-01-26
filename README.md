@@ -15,23 +15,50 @@
 - **Database**: MySQL 
 - **API Integration**: External manga APIs for fetching content.  
 
-## 🛠 Installation & Setup  
-1. Clone the repository:  
+## 🛠 Backend Installation & Setup  
+
+### **Step 1: Clone the Repository**  
+Clone the repository to your local machine:  
+```bash  
+git clone https://github.com/username/manga-reader-app.git(https://github.com/AlexanderK88/c11_examensarbete.git)  
+```  
+
+### **Step 2: Navigate to the Project Directory**  
+```bash  
+cd manga-reader-app  
+```  
+
+### **Step 3: Set Up the MySQL Database with Docker**  
+1. **Ensure Docker is installed and running** on your system.  
+   - [Download Docker](https://www.docker.com/products/docker-desktop) if it’s not installed.  
+
+2. **Add the dump file**: Ensure the `mydatabase_dump.sql` file is located in the root of the project directory (next to `docker-compose.yml`).  
+
+3. **Start the Docker container**:  
+   Run the following command to set up the MySQL database:  
    ```bash  
-   git clone https://github.com/username/manga-reader-app.git  
+   docker-compose up -d  
    ```  
-2. Navigate to the project directory:  
-   ```bash  
-   cd manga-reader-app  
-   ```  
-3. Install dependencies:  
-   ```bash  
-   npm install  
-   ```  
-4. Start the development server:  
-   ```bash  
-   npm start  
-   ```  
+
+   This will:
+   - Start a MySQL container.
+   - Create the database `mydatabase`.
+   - Import the tables and data from the `mydatabase_dump.sql` file.  
+
+4. **Verify the database setup**:  
+   - Open IntelliJ IDEA and go to the **Database** tab.  
+   - Add a new data source by choosing **MySQL**.  
+   - Use the following credentials to connect:  
+     - **Host:** `localhost`  
+     - **Port:** `3306`  
+     - **Username:** `root`  
+     - **Password:** `verysecret`  
+     - **Database:** `mydatabase`  
+
+   Once connected, you should see the tables and data in the database.
+
+---
+
 
 ## 📱 Screenshots  
 (Include some screenshots of your app in action here.)

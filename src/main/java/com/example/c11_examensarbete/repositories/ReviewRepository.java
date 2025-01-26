@@ -1,4 +1,7 @@
 package com.example.c11_examensarbete.repositories;
 
-public interface ReviewRepository {
+import com.example.c11_examensarbete.entities.Review;
+import org.springframework.data.repository.ListCrudRepository;
+
+public interface ReviewRepository extends ListCrudRepository<Review, Integer> {
 }
