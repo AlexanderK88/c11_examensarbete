@@ -2,9 +2,15 @@ package com.example.c11_examensarbete.controllers;
 
 import com.example.c11_examensarbete.dtos.MangaDto;
 import com.example.c11_examensarbete.dtos.SavedMangaDto;
+import com.example.c11_examensarbete.entities.User;
+import com.example.c11_examensarbete.exceptionMappers.ResourceNotFoundExceptionMapper;
+import com.example.c11_examensarbete.repositories.UserRepository;
 import com.example.c11_examensarbete.services.MangaService;
 import com.example.c11_examensarbete.services.SavedMangaService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
@@ -16,25 +22,38 @@ import java.util.stream.Collectors;
 public class SavedMangaController {
 
     private final MangaService mangaService;
+    private final UserRepository userRepository;
     SavedMangaService savedMangaService;
 
-    public SavedMangaController(SavedMangaService savedMangaService, MangaService mangaService) {
+    public SavedMangaController(SavedMangaService savedMangaService, MangaService mangaService, UserRepository userRepository) {
         this.savedMangaService = savedMangaService;
         this.mangaService = mangaService;
+        this.userRepository = userRepository;
     }
 
-    //TODO: Works in bruno but no exeption handling
+    //TODO: Works in bruno but no exception handling
     @GetMapping("/user/{userid}/mangas")
-    public List<MangaDto> getUsersMangas(@PathVariable int userid) {
-        List<SavedMangaDto> savedMangas = savedMangaService.getUsersSavedMangas(userid);
+    public ResponseEntity<List<MangaDto>> getUsersMangas(@PathVariable int userid) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String oauthId = authentication.getName();
 
+        //CHANGE TO findByOauthProviderId(oauthId) and remove id from url
+        User user = userRepository.findById(userid)
+                .orElseThrow(() -> new ResourceNotFoundExceptionMapper("No user found with id " + userid));
+
+        String userOauthId = user.getOauthProviderId();
+        if(!userOauthId.equals(oauthId) ) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+
+        List<SavedMangaDto> savedMangas = savedMangaService.getUsersSavedMangas(userid);
         List<Integer> mangaIds = savedMangas.stream()
-                .map(savedManga -> savedManga.mangaid())
+                .map(SavedMangaDto::mangaid)
                 .collect(Collectors.toList());
 
         List<MangaDto> mangaDtos = mangaService.getMangaByIds(mangaIds);
 
-        return mangaDtos;
+        return ResponseEntity.ok(mangaDtos);
     }
 
     @GetMapping("/user/{userid}/savedmanga")
@@ -63,5 +82,3 @@ public class SavedMangaController {
         return ResponseEntity.noContent().build();
     }
 }
-
-
