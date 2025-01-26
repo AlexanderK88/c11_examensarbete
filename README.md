@@ -1,6 +1,3 @@
-# C11_Examensarbete
-Examensarbete med Alexander, Mangatracker webapp.
-
 # 📚 Manga Reader App  
 
 **Manga Reader App** is a sleek and user-friendly application designed for manga enthusiasts to explore, read, and manage their favorite manga collections. Whether you're a casual reader or a passionate fan, this app provides a seamless experience with customizable features and an intuitive interface.  
