@@ -3,6 +3,8 @@ package com.example.c11_examensarbete.controllers;
 import com.example.c11_examensarbete.dtos.CommentDto;
 import com.example.c11_examensarbete.services.CommentService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
@@ -20,14 +22,16 @@ public class CommentController {
 
     //TODO: works in bruno but no exception handling
     @GetMapping("/comments/{reviewid}")
-    public List<CommentDto> getCommentsByReview(@PathVariable int reviewid) {
-        return commentService.getCommentsByReview(reviewid);
+    public ResponseEntity<List<CommentDto>> getCommentsByReview(@PathVariable int reviewid) {
+        return ResponseEntity.ok(commentService.getCommentsByReview(reviewid));
     }
 
     //TODO: works in bruno but no exception handling
-    @GetMapping("/comments/user/{id}")
-    public List<CommentDto> getCommentsByUser(@PathVariable int id) {
-        return commentService.getCommentsByUser(id);
+    @GetMapping("/comments/user")
+    public ResponseEntity<List<CommentDto>> getCommentsByUser() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String oauthId = auth.getName();
+        return ResponseEntity.ok(commentService.getCommentsByUser(oauthId));
     }
 
     //TODO: Works in bruno but no exeption handling

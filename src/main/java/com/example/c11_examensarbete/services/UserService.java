@@ -4,6 +4,7 @@ import com.example.c11_examensarbete.dtos.UserDto;
 import com.example.c11_examensarbete.entities.User;
 import com.example.c11_examensarbete.exceptionMappers.ResourceNotFoundExceptionMapper;
 import com.example.c11_examensarbete.repositories.UserRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -14,9 +15,11 @@ import java.util.Optional;
 public class UserService {
 
     UserRepository userRepository;
+    SecurityService securityService;
 
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, SecurityService securityService) {
         this.userRepository = userRepository;
+        this.securityService = securityService;
     }
 
     public List<UserDto> getAllUsers(){
@@ -26,7 +29,8 @@ public class UserService {
     }
 
     public UserDto getUsersByOauthId(String oauthId){
-        User user = userRepository.findByOauthProviderId(oauthId);
+        User user = userRepository.findByOauthProviderId(oauthId)
+                .orElseThrow(() -> new ResourceNotFoundExceptionMapper("No user found with that id") );
         if(user == null){
             throw new ResourceNotFoundExceptionMapper("User not found with oauthId: " + oauthId);
         }
@@ -67,5 +71,15 @@ public class UserService {
         return userRepository.save(user).getId();
     }
 
+    @Transactional
+    public void addUserInfo(UserDto userdto, String oauthId) {
+        User user = userRepository.findByOauthProviderId(oauthId)
+                .orElseThrow(() -> new ResourceNotFoundExceptionMapper("No user found with oauthId: " + oauthId));
 
+        securityService.validateUserAcces(user.getOauthProviderId(), oauthId);
+
+        if (!userdto.email().isBlank()) user.setEmail(userdto.email());
+        if (!userdto.username().isBlank()) user.setUsername(userdto.username());
+        userRepository.save(user);
+    }
 }

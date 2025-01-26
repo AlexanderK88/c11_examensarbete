@@ -2,7 +2,9 @@ package com.example.c11_examensarbete.controllers;
 
 import com.example.c11_examensarbete.dtos.MangaDto;
 import com.example.c11_examensarbete.services.MangaService;
+import org.apache.coyote.Response;
 import org.springframework.data.domain.Page;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.example.c11_examensarbete.dtos.AuthorDto;
 import com.example.c11_examensarbete.dtos.GenreDto;
@@ -80,7 +82,7 @@ public class MangaController {
     }
 
     @GetMapping("/manga/sorted")
-    public Page<MangaDto> getPopularMangas(
+    public ResponseEntity<Page<MangaDto>> getSortedMangas(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "25") int size,
             @RequestParam(defaultValue = "popularity") String sort,
@@ -89,39 +91,39 @@ public class MangaController {
             @RequestParam(required = false) String genre,
             @RequestParam(required = false) String search
     ) {
-        return mangaService.getSortedManga(page, size, sort, sortDirection, types, genre, search );
+        return ResponseEntity.ok(mangaService.getSortedManga(page, size, sort, sortDirection, types, genre, search ));
     }
 
     //Works in bruno but no exeption handling
     @GetMapping("/manga/most-read")
-    public List<MangaDto> getMostReadManga() {
+    public ResponseEntity<List<MangaDto>> getMostReadManga() {
         List<MangaDto> manga = mangaService.getMostReadManga();
-        return manga;
+        return ResponseEntity.ok(manga);
     }
 
     //Works in bruno but no exeption handling
     @GetMapping("/manga/highest-rated")
-    public List<MangaDto> getHighestRatedMangas() {
+    public ResponseEntity<List<MangaDto>> getHighestRatedMangas() {
         List<MangaDto> manga = mangaService.getHighestRatedManga();
-        return manga;
+        return ResponseEntity.ok(manga);
     }
 
     //Works in bruno but no exeption handling
     @GetMapping("/manga/images/{id}")
-    public ImageDto getImagesByManga(@PathVariable int id) {
+    public ResponseEntity<ImageDto> getImagesByManga(@PathVariable int id) {
         ImageDto image = mangaService.getImagesByManga(id);
-                return image;
+                return ResponseEntity.ok(image);
     }
 
     @GetMapping("/manga/search")
-    public Page<MangaDto> searchManga(
+    public ResponseEntity<Page<MangaDto>> searchManga(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "25") int size,
             @RequestParam String query
     ) {
         if (query.isBlank()) {
-            return Page.empty();
+            return ResponseEntity.noContent().build();
         }
-        return mangaService.getMangaBySearch(query, page, size);
+        return ResponseEntity.ok(mangaService.getMangaBySearch(query, page, size));
     }
 }

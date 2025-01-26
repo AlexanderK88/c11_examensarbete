@@ -4,6 +4,8 @@ import com.example.c11_examensarbete.dtos.ListDto;
 import com.example.c11_examensarbete.dtos.SavedMangaDto;
 import com.example.c11_examensarbete.services.ListService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
@@ -20,15 +22,18 @@ public class ListController {
     }
 
     //TODO: Works in bruno but no exeption handling
-    @GetMapping("/user/{userid}/lists")
-    public List<ListDto> getAllListsByUser(@PathVariable int userid){
-        return listService.getAllListsByUser(userid);
+    @GetMapping("/user/lists")
+    public ResponseEntity<List<ListDto>> getAllListsByUser(){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String oauthId = auth.getName();
+
+        return ResponseEntity.ok(listService.getAllListsByUser(oauthId));
     }
 
     //TODO: Works in bruno but no exeption handling
     @GetMapping("/user/list/{id}")
-    public List<SavedMangaDto> getAllSavedMangasInList(@PathVariable int id) {
-        return listService.getAllSavedMangasInList(id);
+    public ResponseEntity<List<SavedMangaDto>> getAllSavedMangasInList(@PathVariable int id) {
+        return ResponseEntity.ok(listService.getAllSavedMangasInList(id));
     }
 
     //TODO: Works in bruno but no exeption handling
