@@ -1,11 +1,6 @@
 # C11_Examensarbete
 Examensarbete med Alexander, Mangatracker webapp.
 
-
-Sure! Here's a description text you can use for your manga app's README on GitHub:
-
----
-
 # 📚 Manga Reader App  
 
 **Manga Reader App** is a sleek and user-friendly application designed for manga enthusiasts to explore, read, and manage their favorite manga collections. Whether you're a casual reader or a passionate fan, this app provides a seamless experience with customizable features and an intuitive interface.  
@@ -22,10 +17,6 @@ Sure! Here's a description text you can use for your manga app's README on GitHu
 - **Backend**: JAVA Spring Boot  
 - **Database**: MySQL 
 - **API Integration**: External manga APIs for fetching content.  
-
-Here’s the updated **Installation & Setup** section with the steps for setting up the backend, including the MySQL dump and Docker container. This is tailored for the backend setup, and we can create a separate section for the frontend afterward.
-
----
 
 ## 🛠 Backend Installation & Setup  
 
