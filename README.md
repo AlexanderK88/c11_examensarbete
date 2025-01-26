@@ -32,7 +32,7 @@ cd c11_examensarbete
 1. **Ensure Docker is installed and running** on your system.  
    - [Download Docker](https://www.docker.com/products/docker-desktop) if it’s not installed.  
 
-2. **Add the dump file**: Ensure the `mydatabase_dump.sql` file is located in the root of the project directory (next to `docker-compose.yml`).  
+2. **Add the dump file that we provided**: Ensure the `mydatabase_dump.sql` file is located in the root of the project directory (next to `docker-compose.yml`).  
 
 3. **Start the Docker container**:  
    Run the following command to set up the MySQL database:  
