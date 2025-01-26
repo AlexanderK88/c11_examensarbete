@@ -9,5 +9,5 @@ public interface UserRepository extends ListCrudRepository<User, Integer> {
     Optional<User> findByEmail(String email);
     User findByUsername(String username);
 
-    User findByOauthProviderId(String oauthId);
+    Optional<User> findByOauthProviderId(String oauthId);
 }

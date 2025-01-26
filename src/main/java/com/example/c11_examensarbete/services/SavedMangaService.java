@@ -2,6 +2,7 @@ package com.example.c11_examensarbete.services;
 
 import com.example.c11_examensarbete.dtos.SavedMangaDto;
 import com.example.c11_examensarbete.entities.SavedManga;
+import com.example.c11_examensarbete.entities.User;
 import com.example.c11_examensarbete.exceptionMappers.BadRequestExceptionMapper;
 import com.example.c11_examensarbete.exceptionMappers.ResourceNotFoundExceptionMapper;
 import com.example.c11_examensarbete.repositories.MangaRepository;
@@ -17,19 +18,27 @@ public class SavedMangaService {
     MangaRepository mangaRepository;
     SavedMangaRepository savedMangaRepository;
     UserRepository userRepository;
+    SecurityService securityService;
 
-    public SavedMangaService(SavedMangaRepository savedMangaRepository, MangaRepository mangaRepository, UserRepository userRepository) {
+    public SavedMangaService(SavedMangaRepository savedMangaRepository, MangaRepository mangaRepository, UserRepository userRepository, SecurityService securityService) {
         this.savedMangaRepository = savedMangaRepository;
         this.mangaRepository = mangaRepository;
         this.userRepository = userRepository;
+        this.securityService = securityService;
     }
 
-    public List<SavedMangaDto> getUsersSavedMangas(int userid){
-        if(userid <= 0){
-            throw new BadRequestExceptionMapper("User id must be greater than 0");
+    public List<SavedMangaDto> getUsersSavedMangas(String oauthId){
+        if(oauthId == null || oauthId.isBlank()){
+            throw new BadRequestExceptionMapper("Id must exist");
         }
+
+        User user = userRepository.findByOauthProviderId(oauthId)
+                .orElseThrow(() -> new ResourceNotFoundExceptionMapper("User not found"));
+
+        securityService.validateUserAcces(user.getOauthProviderId(), oauthId);
+
         return savedMangaRepository.findAll().stream()
-                .filter(savedManga -> savedManga.getUser().getId() == userid)
+                .filter(savedManga -> savedManga.getUser().getId().equals(user.getId()))
                 .map(SavedMangaDto::fromSavedManga)
                 .toList();
     }
@@ -82,12 +91,16 @@ public class SavedMangaService {
         return savedManga.getId();
     }
 
-    public void deleteSavedManga(int savedMangaId, int userId) {
-        if(savedMangaId <= 0 || userId <= 0){
-            throw new BadRequestExceptionMapper("SavedMangaId or UserId is less than 0");
+    public void deleteSavedManga(int savedMangaId, String oauthId) {
+        if(savedMangaId <= 0 || oauthId == null || oauthId.isBlank()){
+            throw new BadRequestExceptionMapper("SavedMangaId or auth is not valid");
         }
+        User user = userRepository.findByOauthProviderId(oauthId)
+                .orElseThrow(() -> new ResourceNotFoundExceptionMapper("User not found"));
+        securityService.validateUserAcces(user.getOauthProviderId(), oauthId);
+
         SavedManga savedManga = savedMangaRepository.findByMangaId(savedMangaId).stream()
-                .filter(savedManga1 -> savedManga1.getUser().getId() == userId)
+                .filter(savedManga1 -> savedManga1.getUser().getId().equals(user.getId()))
                 .findFirst()
                 .orElseThrow(() -> new ResourceNotFoundExceptionMapper("Saved manga not found with id: " + savedMangaId));
         savedMangaRepository.delete(savedManga);

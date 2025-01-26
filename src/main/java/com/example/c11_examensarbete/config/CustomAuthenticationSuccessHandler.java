@@ -40,10 +40,10 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
         String email = oAuth2User.getAttribute("email");
         String name = oAuth2User.getAttribute("name");
         String picture = oAuth2User.getAttribute("avatar_url");
-        int oAuthId = oAuth2User.getAttribute("id");
+        Integer oAuthId = oAuth2User.getAttribute("id");
 
-        // Check if user exists in the database, and save/update accordingly CHANGE TO OAUTHID
-        userRepository.findByEmail(email).ifPresentOrElse(
+        assert oAuthId != null;
+        userRepository.findByOauthProviderId(oAuthId.toString()).ifPresentOrElse(
                 user -> {
                     // Update existing user details ADD EMAIL HERE
                     user.setUsername(name);
@@ -56,7 +56,6 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
                         user.setRole("USER");
                     }
                     userRepository.save(user);
-
                 },
                 () -> {
                     // Create a new user entry
@@ -73,9 +72,12 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
                 }
         );
 
-        //if(!email || !name) response.sendRedirect("http://localhost:5173/profile");
+        if(email == null || name == null) response.sendRedirect("http://localhost:5173/profile");
+        else{
 
-        // Redirect the user to the frontend application
-        response.sendRedirect("http://localhost:5173/discovery");
+            // Redirect the user to the frontend application
+            response.sendRedirect("http://localhost:5173/discovery");
+        }
+
     }
 }

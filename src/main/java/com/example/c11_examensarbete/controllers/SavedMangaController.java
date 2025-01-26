@@ -32,21 +32,15 @@ public class SavedMangaController {
     }
 
     //TODO: Works in bruno but no exception handling
-    @GetMapping("/user/{userid}/mangas")
-    public ResponseEntity<List<MangaDto>> getUsersMangas(@PathVariable int userid) {
+    @GetMapping("/user/mangas")
+    public ResponseEntity<List<MangaDto>> getUsersMangas() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String oauthId = authentication.getName();
 
-        //CHANGE TO findByOauthProviderId(oauthId) and remove id from url
-        User user = userRepository.findById(userid)
-                .orElseThrow(() -> new ResourceNotFoundExceptionMapper("No user found with id " + userid));
 
-        String userOauthId = user.getOauthProviderId();
-        if(!userOauthId.equals(oauthId) ) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
-        }
 
-        List<SavedMangaDto> savedMangas = savedMangaService.getUsersSavedMangas(userid);
+        List<SavedMangaDto> savedMangas = savedMangaService.getUsersSavedMangas(oauthId);
+
         List<Integer> mangaIds = savedMangas.stream()
                 .map(SavedMangaDto::mangaid)
                 .collect(Collectors.toList());
@@ -56,9 +50,11 @@ public class SavedMangaController {
         return ResponseEntity.ok(mangaDtos);
     }
 
-    @GetMapping("/user/{userid}/savedmanga")
-    public List<SavedMangaDto> getUsersSavedManga(@PathVariable int userid) {
-        return savedMangaService.getUsersSavedMangas(userid);
+    @GetMapping("/user/savedmanga")
+    public ResponseEntity<List<SavedMangaDto>> getUsersSavedManga() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String oauthId = authentication.getName();
+        return ResponseEntity.ok(savedMangaService.getUsersSavedMangas(oauthId));
     }
 
     //TODO: Works in bruno but no exeption handling
@@ -76,9 +72,11 @@ public class SavedMangaController {
 
 
     //TODO: Works in bruno but no exeption handling
-    @DeleteMapping("/user/manga/{savedmangaid}/{userid}")
-    public ResponseEntity<Void> deleteSavedManga(@PathVariable int savedmangaid, @PathVariable int userid) {
-        savedMangaService.deleteSavedManga(savedmangaid, userid);
+    @DeleteMapping("/user/manga/{savedmangaid}")
+    public ResponseEntity<Void> deleteSavedManga(@PathVariable int savedmangaid) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String oauthId = authentication.getName();
+        savedMangaService.deleteSavedManga(savedmangaid, oauthId);
         return ResponseEntity.noContent().build();
     }
 }

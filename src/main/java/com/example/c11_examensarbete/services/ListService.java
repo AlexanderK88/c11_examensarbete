@@ -5,6 +5,7 @@ import com.example.c11_examensarbete.dtos.ListDto;
 import com.example.c11_examensarbete.dtos.MangaDto;
 import com.example.c11_examensarbete.dtos.SavedMangaDto;
 import com.example.c11_examensarbete.entities.SavedManga;
+import com.example.c11_examensarbete.entities.User;
 import com.example.c11_examensarbete.exceptionMappers.BadRequestExceptionMapper;
 import com.example.c11_examensarbete.exceptionMappers.ResourceNotFoundExceptionMapper;
 import com.example.c11_examensarbete.repositories.ListRepository;
@@ -23,20 +24,28 @@ public class ListService {
     ListRepository listRepository;
     MangaRepository mangaRepository;
     SavedMangaRepository savedMangaRepository;
+    SecurityService securityService;
 
-    public ListService (ListRepository listRepository, MangaRepository mangaRepository, UserRepository userRepository, SavedMangaRepository savedMangaRepository) {
+    public ListService (ListRepository listRepository, MangaRepository mangaRepository, UserRepository userRepository, SavedMangaRepository savedMangaRepository, SecurityService securityService) {
         this.listRepository = listRepository;
         this.mangaRepository = mangaRepository;
         this.userRepository = userRepository;
         this.savedMangaRepository = savedMangaRepository;
+        this.securityService = securityService;
     }
 
-    public java.util.List<ListDto> getAllListsByUser(int id) {
-        if(id <= 0){
-            throw new BadRequestExceptionMapper("ID must be greater than 0.");
+    public java.util.List<ListDto> getAllListsByUser(String oauthId) {
+        if(oauthId == null || oauthId.isEmpty()){
+            throw new BadRequestExceptionMapper("ID must be valid.");
         }
+
+        User user = userRepository.findByOauthProviderId(oauthId)
+                .orElseThrow(() -> new ResourceNotFoundExceptionMapper("User not found."));
+
+        securityService.validateUserAcces(user.getOauthProviderId(), oauthId);
+
         return listRepository.findAll().stream()
-                .filter(list -> list.getUser().getId() == id)
+                .filter(list -> list.getUser().getId().equals(user.getId()))
                 .map(ListDto::fromList)
                 .toList();
     }

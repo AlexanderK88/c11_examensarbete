@@ -2,6 +2,7 @@ package com.example.c11_examensarbete.services;
 
 import com.example.c11_examensarbete.dtos.CommentDto;
 import com.example.c11_examensarbete.entities.Comment;
+import com.example.c11_examensarbete.entities.User;
 import com.example.c11_examensarbete.exceptionMappers.BadRequestExceptionMapper;
 import com.example.c11_examensarbete.exceptionMappers.ResourceNotFoundExceptionMapper;
 import com.example.c11_examensarbete.repositories.CommentRepository;
@@ -17,11 +18,13 @@ public class CommentService {
     CommentRepository commentRepository;
     ReviewRepository reviewRepository;
     UserRepository userRepository;
+    SecurityService securityService;
 
-    public CommentService(CommentRepository commentRepository, ReviewRepository reviewRepository, UserRepository userRepository) {
+    public CommentService(CommentRepository commentRepository, ReviewRepository reviewRepository, UserRepository userRepository, SecurityService securityService) {
         this.commentRepository = commentRepository;
         this.reviewRepository = reviewRepository;
         this.userRepository = userRepository;
+        this.securityService = securityService;
     }
 
     public List<CommentDto> getCommentsByReview(int id){
@@ -38,16 +41,22 @@ public class CommentService {
         return comments;
     }
 
-    public List<CommentDto> getCommentsByUser(int id){
-        if (id <= 0) {
-            throw new BadRequestExceptionMapper("User ID must be a positive integer.");
+    public List<CommentDto> getCommentsByUser(String oauthId) {
+        if (oauthId == null || oauthId.isEmpty()) {
+            throw new BadRequestExceptionMapper("ID must be a valid");
         }
+
+        User user = userRepository.findByOauthProviderId(oauthId)
+                .orElseThrow(() -> new ResourceNotFoundExceptionMapper("User not found"));
+
+        securityService.validateUserAcces(user.getOauthProviderId(), oauthId);
+
         List<CommentDto> comments = commentRepository.findAll().stream()
-                .filter(comment -> comment.getUser().getId() == id)
+                .filter(comment -> comment.getUser().getId().equals(user.getId()))
                 .map(CommentDto::fromComment)
                 .toList();
         if (comments.isEmpty()) {
-            throw new ResourceNotFoundExceptionMapper("No comments found for user with ID " + id);
+            throw new ResourceNotFoundExceptionMapper("No comments found for user with ID " + user.getId());
         }
         return comments;
     }

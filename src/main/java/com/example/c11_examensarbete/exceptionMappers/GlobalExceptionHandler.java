@@ -47,8 +47,8 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorResponse);
     }
 
-    @ExceptionHandler(AccessDeniedException.class)
-    public ResponseEntity<ErrorResponse> handleAccessDeniedException(AccessDeniedException ex) {
+    @ExceptionHandler(AccessDeniedExceptionMapper.class)
+    public ResponseEntity<ErrorResponse> handleAccessDeniedException(AccessDeniedExceptionMapper ex) {
         logger.error("Error: ", ex);
         ErrorResponse errorResponse = new ErrorResponse(
                 "Forbidden",
