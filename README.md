@@ -25,7 +25,7 @@ git clone https://github.com/username/manga-reader-app.git(https://github.com/Al
 
 ### **Step 2: Navigate to the Project Directory**  
 ```bash  
-cd manga-reader-app  
+cd c11_examensarbete  
 ```  
 
 ### **Step 3: Set Up the MySQL Database with Docker**  
