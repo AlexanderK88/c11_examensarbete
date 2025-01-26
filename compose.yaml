@@ -1,10 +1,11 @@
 services:
   mysql:
-    image: 'mysql:latest'
+    image: mysql:8.0
+    container_name: my_mysql_container
     environment:
-      - 'MYSQL_DATABASE=mydatabase'
-      - 'MYSQL_PASSWORD=secret'
-      - 'MYSQL_ROOT_PASSWORD=verysecret'
-      - 'MYSQL_USER=myuser'
+      MYSQL_ROOT_PASSWORD: verysecret
+      MYSQL_DATABASE: mydatabase
     ports:
-      - '3306:3306'
+      - "3306:3306"
+    volumes:
+      - ./mydatabase_dump.sql:/docker-entrypoint-initdb.d/mydatabase_dump.sql
