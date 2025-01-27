@@ -15,12 +15,16 @@
 - **Database**: MySQL 
 - **API Integration**: External manga APIs for fetching content.  
 
+Here’s an updated version of your backend installation instructions that includes the missing step for setting up the OAuth client ID and secret in a `.env` file:
+
+---
+
 ## 🛠 Backend Installation & Setup  
 
 ### **Step 1: Clone the Repository**  
 Clone the repository to your local machine:  
 ```bash  
-git clone https://github.com/username/manga-reader-app.git(https://github.com/AlexanderK88/c11_examensarbete.git)  
+git clone https://github.com/AlexanderK88/c11_examensarbete.git  
 ```  
 
 ### **Step 2: Navigate to the Project Directory**  
@@ -58,6 +62,41 @@ cd c11_examensarbete
    Once connected, you should see the tables and data in the database.
 
 ---
+
+### **Step 4: Set Up OAuth Credentials**  
+To enable OAuth authentication, you need to provide your GitHub OAuth client credentials. Follow these steps:
+
+1. **Create a `.env` file in the root of the project directory**:  
+
+2. **Add the following environment variables to the `.env` file**:
+   ```plaintext
+   OAUTH_CLIENT_ID=your-client-id-here
+   OAUTH_CLIENT_SECRET=your-client-secret-here
+   ```
+
+   Replace `your-client-id-here` and `your-client-secret-here` with the **GitHub OAuth Client ID** and **Client Secret** provided to you.
+
+3. **Verify the `application.properties` file**:  
+   Ensure that the following lines are present in the `application.properties` file, which allows the application to import the `.env` file:
+   ```properties
+   spring.config.import=optional:file:.env[.properties]
+   spring.security.oauth2.client.registration.github.client-id=${OAUTH_CLIENT_ID}
+   spring.security.oauth2.client.registration.github.client-secret=${OAUTH_CLIENT_SECRET}
+   spring.security.oauth2.client.registration.github.scope=read:user,user:email
+   ```
+
+   These properties will automatically read the values from the `.env` file you created.
+
+---
+
+### **Step 5: Start the Backend Application**  
+1. Open the project in IntelliJ IDEA.  
+2. Run the Spring Boot application:  
+   - Open the **Run** tab in IntelliJ.
+   - Select the **MangaReaderApplication** (or equivalent) and click **Run**.  
+
+   The application should now be running on [http://localhost:8080](http://localhost:8080).  
+
 
 
 ## 📱 Screenshots  
