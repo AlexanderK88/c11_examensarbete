@@ -59,9 +59,39 @@ cd c11_examensarbete
 
 ---
 
+### **Step 4: Set Up OAuth Credentials**  
+To enable OAuth authentication, you need to provide your GitHub OAuth client credentials. Follow these steps:
 
-## 📱 Screenshots  
-(Include some screenshots of your app in action here.)
+1. **Create a `.env` file in the root of the project directory**:  
+
+2. **Add the following environment variables to the `.env` file**:
+   ```plaintext
+   OAUTH_CLIENT_ID=your-client-id-here
+   OAUTH_CLIENT_SECRET=your-client-secret-here
+   ```
+
+   Replace `your-client-id-here` and `your-client-secret-here` with the **GitHub OAuth Client ID** and **Client Secret** provided to you.
+
+3. **Verify the `application.properties` file**:  
+   Ensure that the following lines are present in the `application.properties` file, which allows the application to import the `.env` file:
+   ```properties
+   spring.config.import=optional:file:.env[.properties]
+   spring.security.oauth2.client.registration.github.client-id=${OAUTH_CLIENT_ID}
+   spring.security.oauth2.client.registration.github.client-secret=${OAUTH_CLIENT_SECRET}
+   spring.security.oauth2.client.registration.github.scope=read:user,user:email
+   ```
+
+   These properties will automatically read the values from the `.env` file you created.
+
+---
+
+### **Step 5: Start the Backend Application**  
+1. Open the project in IntelliJ IDEA.  
+2. Run the Spring Boot application:  
+   - Open the **Run** tab in IntelliJ.
+   - Select the **MangaReaderApplication** (or equivalent) and click **Run**.  
+
+   The application should now be running on [http://localhost:8080](http://localhost:8080).  
 
 ## 📜 License  
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for more details.  
